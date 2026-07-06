@@ -1,6 +1,9 @@
 {
   "name": "netolink-workspace",
   "private": true,
+  "workspaces": [
+    "minibanco"
+  ],
   "scripts": {
     "dev": "npm --prefix minibanco run dev",
     "build": "npm --prefix minibanco run build",
