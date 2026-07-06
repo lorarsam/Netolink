@@ -1,0 +1,12 @@
+import { Icon } from '../ui/Icon'
+
+export function BrandLogo({ name, ariaLabel, compact = false }) {
+  return (
+    <div className="flex items-center justify-center gap-2 text-white" aria-label={ariaLabel}>
+      <span className={`${compact ? 'h-5 w-5 rounded-md' : 'h-6 w-6 rounded-lg'} grid place-items-center bg-white text-brand`}>
+        <Icon name="bank" className={compact ? 'h-3.5 w-3.5' : 'h-4 w-4'} strokeWidth={2} />
+      </span>
+      <span className={`${compact ? 'text-sm' : 'text-base'} font-extrabold tracking-tight`}>{name}</span>
+    </div>
+  )
+}

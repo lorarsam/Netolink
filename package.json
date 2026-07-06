@@ -1,0 +1,10 @@
+{
+  "name": "netolink-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix minibanco run dev",
+    "build": "npm --prefix minibanco run build",
+    "lint": "npm --prefix minibanco run lint",
+    "preview": "npm --prefix minibanco run preview"
+  }
+}
