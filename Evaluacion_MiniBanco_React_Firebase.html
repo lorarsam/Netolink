@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación: Mini Banco Digital · React + Firebase — TI3V31</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --primary: #58a6ff;
+    --accent: #7c8cff;
+    --ok: #3fb950;
+    --warn: #d29922;
+    --danger: #f85149;
+    --code-bg: #0b0f14;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.65;
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 48px 28px 80px; }
+
+  header { border-bottom: 2px solid var(--primary); padding-bottom: 24px; margin-bottom: 32px; }
+  .kicker { color: var(--muted); font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; }
+  h1 { font-size: 2.1rem; color: var(--primary); margin: 6px 0 4px; line-height: 1.2; }
+  .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin: 24px 0 8px;
+  }
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .meta-card .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+  .meta-card .value { font-size: 0.95rem; font-weight: 600; margin-top: 2px; }
+
+  h2 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin: 44px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { color: var(--accent); font-size: 1.05rem; margin: 24px 0 10px; }
+  p { margin-bottom: 12px; }
+  strong { color: #fff; }
+
+  ul { margin: 0 0 14px 22px; }
+  li { margin-bottom: 7px; }
+
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.87em;
+    color: #79c0ff;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0 16px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.88rem;
+    color: #a5d6ff;
+  }
+
+  .rf {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+  .rf h4 { color: var(--primary); font-size: 1rem; margin-bottom: 6px; }
+  .rf p { margin: 0; color: var(--text); }
+
+  .bonus { border-left-color: var(--ok); }
+  .bonus h4 { color: var(--ok); }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.93rem; }
+  th {
+    background: var(--surface2);
+    color: var(--primary);
+    text-align: left;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+  }
+  td { padding: 10px 14px; border: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--surface); }
+  .pct { text-align: center; font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border: 1px solid;
+  }
+  .callout.warn { background: rgba(210,153,34,0.08); border-color: var(--warn); }
+  .callout.warn strong { color: var(--warn); }
+  .callout.danger { background: rgba(248,81,73,0.08); border-color: var(--danger); }
+  .callout.danger strong { color: var(--danger); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  @media print {
+    :root {
+      --bg: #ffffff; --surface: #f6f8fa; --surface2: #eaeef2;
+      --border: #d0d7de; --text: #1f2328; --muted: #57606a;
+      --primary: #1a237e; --accent: #3949ab; --code-bg: #f6f8fa;
+    }
+    body { background: #fff; }
+    strong { color: #000; }
+    code { color: #0550ae; }
+    pre { color: #0550ae; }
+    .container { padding: 0; max-width: 100%; }
+    h2 { page-break-after: avoid; }
+    .rf, .callout, table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="kicker">TI3V31 · Programación Front End</div>
+  <h1>Evaluación: Mini Banco Digital</h1>
+  <div class="subtitle">React + Firebase · Programación reactiva y manejo de eventos</div>
+  <div class="meta">
+    <div class="meta-card"><div class="label">Modalidad</div><div class="value">Individual</div></div>
+    <div class="meta-card"><div class="label">Plazo</div><div class="value">1 semana desde la publicación</div></div>
+    <div class="meta-card"><div class="label">Entrega</div><div class="value">Repositorio en GitHub</div></div>
+    <div class="meta-card"><div class="label">Ponderación</div><div class="value">Según programa del curso</div></div>
+  </div>
+</header>
+
+<h2>1. Contexto</h2>
+<p>Una fintech te contrató para construir el prototipo de su banca digital. No necesitan algo gigante: necesitan una interfaz simple, correcta y <strong>reactiva</strong>, donde los datos se actualicen en tiempo real sin que el usuario tenga que refrescar la página. Tu trabajo no es solo que "funcione": es demostrar que sabes estructurar una aplicación React con buenas prácticas de manejo de eventos, manejo de estado y sincronización con un backend en la nube (Firebase).</p>
+<p>Recuerda la filosofía del curso: puedes apoyarte en herramientas de IA para escribir código, pero <strong>tú eres responsable de cada línea que entregas</strong>. En la defensa se te preguntará por qué tu código está escrito como está. Si no puedes explicarlo, no es tuyo.</p>
+
+<h2>2. Objetivos de aprendizaje</h2>
+<ul>
+  <li>Construir una SPA en React usando componentes funcionales y hooks (<code>useState</code>, <code>useEffect</code>, y opcionalmente <code>useContext</code> / <code>useReducer</code>).</li>
+  <li>Aplicar buenas prácticas de manejo de eventos: handlers nombrados, prevención de comportamiento por defecto, validación antes de ejecutar acciones.</li>
+  <li>Aplicar el paradigma reactivo: la UI se deriva del estado, y el estado se sincroniza con Firestore mediante suscripciones en tiempo real (<code>onSnapshot</code>).</li>
+  <li>Integrar Firebase Authentication y Cloud Firestore en una aplicación real.</li>
+  <li>Manejar estados de carga, error y datos vacíos de forma explícita en la interfaz.</li>
+</ul>
+
+<h2>3. Descripción del proyecto</h2>
+<p>Debes construir <strong>XBank</strong> (o el nombre que quieras): una banca digital básica donde un usuario puede iniciar sesión, ver su saldo, transferir dinero a otros usuarios y revisar su historial de movimientos.</p>
+
+<h3>3.1 Requisitos funcionales (obligatorios)</h3>
+
+<div class="rf">
+  <h4>RF1 · Autenticación</h4>
+  <p>Registro e inicio de sesión con Firebase Authentication (email/contraseña). Un usuario no autenticado no puede ver nada más que el login/registro. Al registrarse, se crea su cuenta en Firestore con un saldo inicial de $100.000.</p>
+</div>
+
+<div class="rf">
+  <h4>RF2 · Dashboard con saldo en tiempo real</h4>
+  <p>Al entrar, el usuario ve su nombre y su saldo actual. El saldo se lee con <code>onSnapshot</code>: si cambia en Firestore (por ejemplo, porque otro usuario le transfirió), la UI se actualiza sola, sin refrescar.</p>
+</div>
+
+<div class="rf">
+  <h4>RF3 · Transferencias</h4>
+  <p>Formulario para transferir a otro usuario (por email o identificador). Validaciones mínimas: monto mayor a 0, saldo suficiente, no transferirse a sí mismo, destinatario existente. La transferencia descuenta al emisor, abona al receptor y registra el movimiento.</p>
+</div>
+
+<div class="rf">
+  <h4>RF4 · Historial de movimientos</h4>
+  <p>Lista de movimientos del usuario (enviados y recibidos), ordenada del más reciente al más antiguo, también en tiempo real. Cada movimiento muestra fecha, contraparte, monto y tipo (envío/recepción).</p>
+</div>
+
+<div class="rf">
+  <h4>RF5 · Cerrar sesión</h4>
+  <p>Botón de logout que limpia el estado y devuelve al login. Ojo: al cerrar sesión deben cancelarse las suscripciones activas.</p>
+</div>
+
+<h3>3.2 Opcionales (bonificación, máx. +0,5 en la nota)</h3>
+<div class="rf bonus">
+  <h4>Bonus</h4>
+  <p></p>
+  <ul style="margin-top:8px">
+    <li>Depósito/retiro simulado (botones que modifican el saldo con validación).</li>
+    <li>Filtro o búsqueda en el historial (por tipo, fecha o contraparte).</li>
+    <li>Modo oscuro persistente o diseño destacable (que se note intención, no solo Bootstrap por defecto).</li>
+    <li>Uso de <code>useReducer</code> + <code>useContext</code> para el estado global de la sesión.</li>
+  </ul>
+</div>
+
+<h2>4. Requisitos técnicos: aquí se juega la nota</h2>
+
+<h3>4.1 Manejo de eventos</h3>
+<ul>
+  <li>Handlers con nombre y responsabilidad clara (<code>handleTransferSubmit</code>, <code>handleAmountChange</code>), no funciones anónimas gigantes dentro del JSX.</li>
+  <li>Formularios controlados: el valor de cada input vive en el estado, no en el DOM.</li>
+  <li><code>event.preventDefault()</code> en el submit de formularios. Si tu app recarga la página al transferir, algo hiciste mal.</li>
+  <li>Deshabilitar el botón de enviar mientras la operación está en curso (evitar doble submit = doble transferencia).</li>
+  <li>Validar <strong>antes</strong> de tocar Firestore. El usuario debe recibir feedback claro de qué está mal (mensaje visible, no solo <code>console.log</code>).</li>
+</ul>
+
+<h3>4.2 Programación reactiva</h3>
+<ul>
+  <li>La UI es una función del estado: nada de manipular el DOM a mano (<code>document.getElementById</code> está prohibido dentro de componentes).</li>
+  <li>Saldo e historial se suscriben con <code>onSnapshot</code>, no con <code>getDoc</code> en un intervalo ni con botones de "actualizar".</li>
+  <li>Toda suscripción creada en un <code>useEffect</code> debe retornar su función de limpieza (<code>unsubscribe</code>). Fugas de memoria = descuento.</li>
+  <li>Arreglos de dependencias correctos en <code>useEffect</code>. Ni <code>[]</code> mágicos que esconden bugs, ni dependencias que generan loops infinitos.</li>
+  <li>Estados de carga y error explícitos: mientras llegan los datos se muestra un indicador, y si algo falla el usuario lo sabe.</li>
+</ul>
+
+<h3>4.3 Buenas prácticas generales</h3>
+<ul>
+  <li>Componentes pequeños y con una responsabilidad. Un <code>App.jsx</code> de 400 líneas no es un componente, es un grito de auxilio.</li>
+  <li>Separar la lógica de Firebase en un módulo propio (ej. <code>src/services/</code> o <code>src/firebase/</code>): los componentes no deberían importar Firestore directo por todos lados.</li>
+  <li>Nombres descriptivos en español o inglés, pero consistentes. Nada de <code>data2</code>, <code>aux</code>, <code>cosa</code>.</li>
+  <li>Las credenciales de Firebase van en variables de entorno (<code>.env</code>), y el <code>.env</code> va en el <code>.gitignore</code>. Incluye un <code>.env.example</code> con las claves vacías para que el profesor sepa qué configurar.</li>
+  <li>README con instrucciones para correr el proyecto y las credenciales de 2 usuarios de prueba.</li>
+</ul>
+
+<h3>4.4 Stack obligatorio</h3>
+<p>React 18+ (con Vite recomendado) · Firebase Authentication · Cloud Firestore. El estilo es libre (CSS puro, Tailwind, lo que quieras). No se permite usar librerías que resuelvan el problema por ti (ej. <code>react-firebase-hooks</code>): las suscripciones las escribes tú. <strong>No es necesario desplegar la app</strong>: se evalúa corriendo el proyecto en local con <code>npm run dev</code>.</p>
+
+<h3>4.5 Modelo de datos sugerido</h3>
+<pre>users/{uid}        → { nombre, email, saldo }
+movimientos/{id}   → { emisorUid, receptorUid, monto, fecha, descripcion }</pre>
+<p>Puedes proponer otro modelo si lo justificas en el README. Lo importante es que las consultas del historial y del saldo sean eficientes y en tiempo real.</p>
+
+<h2>5. Rúbrica de evaluación</h2>
+<table>
+  <thead>
+    <tr><th>Criterio</th><th>Descripción</th><th>Puntaje</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Funcionalidad</strong></td>
+      <td>RF1 a RF5 completos y sin errores evidentes. Autenticación, transferencias con validaciones, saldo e historial correctos.</td>
+      <td class="pct">30%</td>
+    </tr>
+    <tr>
+      <td><strong>Programación reactiva</strong></td>
+      <td>Uso correcto de <code>onSnapshot</code> con limpieza de suscripciones, <code>useEffect</code> con dependencias correctas, UI derivada del estado, estados de carga/error.</td>
+      <td class="pct">25%</td>
+    </tr>
+    <tr>
+      <td><strong>Manejo de eventos</strong></td>
+      <td>Formularios controlados, <code>preventDefault</code>, validación previa con feedback al usuario, prevención de doble submit, handlers bien nombrados.</td>
+      <td class="pct">20%</td>
+    </tr>
+    <tr>
+      <td><strong>Calidad del código</strong></td>
+      <td>Componentización, separación de la capa de servicios, nombres claros, <code>.env</code> fuera del repo, README completo.</td>
+      <td class="pct">15%</td>
+    </tr>
+    <tr>
+      <td><strong>Defensa</strong></td>
+      <td>Explicas tu código y tus decisiones. Preguntas tipo: ¿por qué este <code>useEffect</code> tiene estas dependencias? ¿qué pasa si no haces <code>unsubscribe</code>? ¿por qué el saldo no se guarda en <code>useState</code> local sin suscripción?</td>
+      <td class="pct">10%</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout danger">
+  <p><strong>Descuentos:</strong> la app no compila o no corre con las instrucciones del README (−2,0 puntos en la nota final) · credenciales de Firebase expuestas en el repositorio (−1,0) · manipulación directa del DOM dentro de componentes (−0,5) · suscripciones sin limpieza (−0,5).</p>
+</div>
+
+<h2>6. Uso de IA</h2>
+<p>Puedes usar Claude, ChatGPT, Copilot o la herramienta que quieras. Es más: te recomiendo usarlas bien. Las reglas son las mismas de siempre:</p>
+<ul>
+  <li>Todo código que entregas lo debes poder explicar línea por línea en la defensa.</li>
+  <li>Si la IA te genera algo que no entiendes, tu trabajo es entenderlo antes de integrarlo, no pegarlo y rezar.</li>
+  <li>En el README incluye una sección breve (3–5 líneas) contando cómo usaste IA: qué le pediste, qué te sirvió y qué tuviste que corregir.</li>
+</ul>
+
+<h2>7. Formato de entrega</h2>
+<ul>
+  <li><strong>Repositorio GitHub</strong> (público o con acceso al profesor) con historial de commits real. Un solo commit "final" subido la última noche cuenta una historia que no te conviene contar.</li>
+  <li><strong>README.md</strong> con: instrucciones de instalación y ejecución en local, 2 usuarios de prueba (email y contraseña), modelo de datos, y la sección de uso de IA.</li>
+  <li>El proyecto debe correr con <code>npm install</code> + <code>npm run dev</code> siguiendo el README. No se exige deploy.</li>
+  <li>Entrega en la plataforma del curso: link al repositorio, antes de la fecha límite indicada en clases.</li>
+</ul>
+
+<div class="callout warn">
+  <p><strong>Consejo final:</strong> parte por la autenticación y el saldo en tiempo real (RF1 y RF2). Si el día 3 ya tienes un usuario logueado viendo su saldo actualizarse solo, el resto es cuesta abajo. Si el día 6 recién estás configurando Firebase, se te vino la noche. Planifica.</p>
+</div>
+
+<footer>TI3V31 · Programación Front End · Evaluación React + Firebase</footer>
+
+</div>
+</body>
+</html>
