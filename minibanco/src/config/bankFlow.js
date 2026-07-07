@@ -8,9 +8,11 @@ export const screens = {
 }
 
 export const navItems = [
-  { id: screens.dashboard, label: 'Dashboard' },
-  { id: screens.transfer, label: 'Transferir' },
-  { id: screens.history, label: 'Historial' },
+  { id: screens.dashboard, label: 'Dashboard', icon: 'grid' },
+  { id: 'accounts', label: 'Accounts', icon: 'bank', disabled: true },
+  { id: screens.history, label: 'Transactions', icon: 'receipt' },
+  { id: 'wealth', label: 'Wealth', icon: 'shield', disabled: true },
+  { id: 'settings', label: 'Settings', icon: 'settings', disabled: true },
 ]
 
 export const flowSteps = [

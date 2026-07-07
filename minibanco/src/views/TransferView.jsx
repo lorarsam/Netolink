@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
+import { RecentRecipients } from '../components/bank/RecentRecipients'
 import { TransferForm } from '../components/bank/TransferForm'
 import { TransferSummary } from '../components/bank/TransferSummary'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 
 const initialForm = {
-  recipient: '',
+  recipient: 'james.r@example.com',
   amount: '',
   description: '',
 }
@@ -49,31 +50,40 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
     onConfirm({ amount, description: form.description, recipient })
   }
 
+  function handleSelectRecipient(selectedRecipient) {
+    setForm((current) => ({ ...current, recipient: selectedRecipient.email }))
+    setError('')
+  }
+
+  const recentRecipients = users.filter((item) => item.id !== currentUser.id).slice(1, 4)
+
   return (
-    <div className="grid gap-6">
-      <Card className="bg-white">
-        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+    <div className="mx-auto grid max-w-6xl gap-7 py-6">
+      <Card className="rounded-[2rem] bg-white p-7 sm:p-10">
+        <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h2 className="text-3xl font-black">Transferir dinero</h2>
-            <p className="mt-2 text-sm text-ink-muted">Ingresa destinatario, monto y descripcion opcional.</p>
+            <h2 className="text-3xl font-black tracking-tight">Transfer Money</h2>
+            <p className="mt-2 text-sm font-medium text-ink-muted">Send money instantly to another registered Netolink account.</p>
           </div>
-          <Button onClick={onCancel} type="button" variant="ghost">Cancelar</Button>
+          <Button className="self-start px-0" onClick={onCancel} type="button" variant="ghost">Cancel</Button>
         </div>
 
         <TransferForm account={account} checks={checks} error={error} form={form} onChange={handleChange} onSubmit={handleSubmit} recipient={recipient} />
       </Card>
 
+      <RecentRecipients onSelect={handleSelectRecipient} recipients={recentRecipients} />
+
       {showConfirm && (
         <div className="fixed inset-0 z-20 grid place-items-center bg-ink/45 p-5 backdrop-blur-sm">
           <Card className="w-full max-w-md bg-white text-center">
-            <h3 className="text-2xl font-black">Confirmar transferencia</h3>
-            <p className="mt-2 text-sm text-ink-muted">Verifica los datos antes de actualizar saldos y registrar el movimiento.</p>
+            <h3 className="text-2xl font-black">Confirm Transfer</h3>
+            <p className="mt-2 text-sm text-ink-muted">Please review the details below before confirming.</p>
             <div className="my-6 text-left">
-              <TransferSummary amount={amount} recipient={recipient} remainingBalance={account.balance - amount} />
+              <TransferSummary amount={amount} recipient={recipient} remainingBalance={account.balance - amount} showRemaining />
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Button onClick={handleConfirm}>Confirmar</Button>
-              <Button onClick={() => setShowConfirm(false)} variant="ghost">Volver</Button>
+              <Button onClick={handleConfirm}>Confirm</Button>
+              <Button onClick={() => setShowConfirm(false)} variant="ghost">Cancel</Button>
             </div>
           </Card>
         </div>

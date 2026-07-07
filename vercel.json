@@ -1,5 +1,5 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "minibanco/dist",
-  "installCommand": "npm install"
+  "installCommand": "npm install --include=optional --no-package-lock"
 }
