@@ -9,11 +9,21 @@ export const screens = {
 
 export const navItems = [
   { id: screens.dashboard, label: 'Dashboard', icon: 'grid' },
-  { id: 'accounts', label: 'Accounts', icon: 'bank', disabled: true },
-  { id: screens.history, label: 'Transactions', icon: 'receipt' },
-  { id: 'wealth', label: 'Wealth', icon: 'shield', disabled: true },
-  { id: 'settings', label: 'Settings', icon: 'settings', disabled: true },
+  { id: screens.transfer, label: 'Transacciones', icon: 'send' },
+  { id: screens.history, label: 'Historial', icon: 'receipt' },
 ]
+
+export const appSidebar = {
+  brand: {
+    ariaLabel: 'Netolink Digital Banking',
+    name: 'Netolink',
+  },
+  items: navItems,
+  logoutItem: {
+    icon: 'logout',
+    label: 'Cerrar sesion',
+  },
+}
 
 export const flowSteps = [
   'Firebase Auth listo',
