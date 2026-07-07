@@ -25,6 +25,14 @@ export const appSidebar = {
   },
 }
 
+export const appNavbar = {
+  actions: [
+    { id: 'notifications', ariaLabel: 'Notificaciones', icon: 'bell' },
+    { id: 'help', ariaLabel: 'Ayuda', icon: 'help' },
+  ],
+  searchPlaceholder: 'Buscar...',
+}
+
 export const flowSteps = [
   'Firebase Auth listo',
   'Documento Firestore sincronizado',
