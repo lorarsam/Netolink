@@ -1,5 +1,6 @@
 import {
   FiArrowDown,
+  FiArrowUp,
   FiBell,
   FiCoffee,
   FiCreditCard,
@@ -19,6 +20,7 @@ import {
 
 const icons = {
   arrowDown: FiArrowDown,
+  arrowUp: FiArrowUp,
   bag: FiShoppingBag,
   bank: FiCreditCard,
   bell: FiBell,

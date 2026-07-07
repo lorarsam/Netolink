@@ -1,24 +1,58 @@
 import { formatCurrency, formatDateTime } from '../../utils/formatters'
+import { Icon } from '../ui/Icon'
 import { StatusBadge } from '../ui/StatusBadge'
+
+const movementTypes = {
+  egreso: {
+    amountClassName: 'text-brand-dark',
+    icon: 'arrowDown',
+    iconClassName: 'bg-blush text-brand-dark',
+    sign: '-',
+    status: 'danger',
+  },
+  ingreso: {
+    amountClassName: 'text-teal',
+    icon: 'arrowUp',
+    iconClassName: 'bg-mint text-teal',
+    sign: '+',
+    status: 'success',
+  },
+}
 
 export function MovementList({ limit, transactions }) {
   const items = limit ? transactions.slice(0, limit) : transactions
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-soft">
+    <div className="grid gap-3">
       {items.map((transaction) => (
-        <div key={transaction.id} className="grid gap-3 border-b border-line p-5 last:border-b-0 md:grid-cols-[1fr_1fr_auto_auto] md:items-center">
-          <div>
-            <p className="font-black">{transaction.counterparty}</p>
-            <p className="text-xs text-ink-muted">{transaction.description}</p>
-          </div>
-          <p className="text-sm text-ink-muted">{formatDateTime(transaction.date)}</p>
-          <StatusBadge variant={transaction.type === 'ingreso' ? 'success' : 'danger'}>{transaction.type}</StatusBadge>
-          <p className={`text-right font-black ${transaction.type === 'ingreso' ? 'text-teal' : 'text-brand-dark'}`}>
-            {transaction.type === 'ingreso' ? '+' : '-'}{formatCurrency(transaction.amount)}
-          </p>
-        </div>
+        <MovementItem key={transaction.id} transaction={transaction} />
       ))}
+    </div>
+  )
+}
+
+function MovementItem({ transaction }) {
+  const type = movementTypes[transaction.type] || movementTypes.egreso
+
+  return (
+    <div className="grid gap-4 rounded-3xl border border-line/80 bg-white p-4 shadow-soft transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card sm:grid-cols-[auto_1fr_auto] sm:items-center">
+      <div className={`grid h-11 w-11 place-items-center rounded-2xl ${type.iconClassName}`}>
+        <Icon name={type.icon} className="h-5 w-5" />
+      </div>
+      <div className="grid gap-1 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-4">
+        <div>
+          <p className="font-black text-ink">{transaction.counterparty}</p>
+          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-ink-muted">
+            <p className="text-xs text-ink-muted">{transaction.description}</p>
+            <span aria-hidden="true">|</span>
+            <p>{formatDateTime(transaction.date)}</p>
+          </div>
+        </div>
+        <StatusBadge variant={type.status}>{transaction.type}</StatusBadge>
+      </div>
+      <p className={`text-left text-lg font-black sm:text-right ${type.amountClassName}`}>
+        {type.sign}{formatCurrency(transaction.amount)}
+      </p>
     </div>
   )
 }

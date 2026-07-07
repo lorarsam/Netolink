@@ -1,3 +1,4 @@
+import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 
 export function Navbar({ actions = [], searchPlaceholder, title, user }) {
@@ -15,9 +16,9 @@ export function Navbar({ actions = [], searchPlaceholder, title, user }) {
           </div>
         ) : null}
         {actions.map((action) => (
-          <button className="grid h-8 w-8 place-items-center rounded-full text-ink-soft hover:bg-cream-field" key={action.id} type="button" aria-label={action.ariaLabel}>
+          <Button key={action.id} type="button" aria-label={action.ariaLabel} variant="iconGhost">
             <Icon name={action.icon} className="h-4 w-4" />
-          </button>
+          </Button>
         ))}
         <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-brand text-sm font-black text-white" title={user?.name}>
           {userInitial}

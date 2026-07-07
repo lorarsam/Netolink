@@ -1,5 +1,7 @@
 import { MovementList } from '../components/bank/MovementList'
+import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { historyContent } from '../config/bankFlow'
 import { formatCurrency } from '../utils/formatters'
 
 export function HistoryView({ onDashboard, transactions }) {
@@ -11,23 +13,23 @@ export function HistoryView({ onDashboard, transactions }) {
       <Card>
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h2 className="text-4xl font-black">Historial de movimientos</h2>
-            <p className="mt-2 max-w-xl text-ink-muted">Movimientos en tiempo real, ordenados del mas reciente al mas antiguo.</p>
+            <h2 className="text-4xl font-black">{historyContent.title}</h2>
+            <p className="mt-2 max-w-xl text-ink-muted">{historyContent.subtitle}</p>
           </div>
-          <button className="text-left text-sm font-black text-brand lg:text-right" onClick={onDashboard} type="button">Volver al Dashboard</button>
+          <Button onClick={onDashboard} type="button" variant="ghost">{historyContent.backLabel}</Button>
         </div>
 
         <div className="mt-7 grid gap-3 sm:grid-cols-3">
-          <Stat label="Total" value={String(transactions.length)} />
-          <Stat label="Ingresos" tone="text-teal" value={formatCurrency(incoming)} />
-          <Stat label="Egresos" tone="text-brand-dark" value={formatCurrency(outgoing)} />
+          <Stat label={historyContent.stats.total} value={String(transactions.length)} />
+          <Stat label={historyContent.stats.incoming} tone="text-teal" value={formatCurrency(incoming)} />
+          <Stat label={historyContent.stats.outgoing} tone="text-brand-dark" value={formatCurrency(outgoing)} />
         </div>
       </Card>
 
       <div className="flex flex-wrap gap-3 text-sm font-bold text-ink-muted">
-        <span className="rounded-full bg-white px-4 py-3 shadow-soft">Tipo: todos</span>
-        <span className="rounded-full bg-white px-4 py-3 shadow-soft">Fecha: recientes</span>
-        <span className="rounded-full bg-white px-4 py-3 shadow-soft">Orden: descendente</span>
+        {historyContent.filters.map((filter) => (
+          <span className="rounded-full bg-white px-4 py-3 shadow-soft" key={filter}>{filter}</span>
+        ))}
       </div>
 
       <MovementList transactions={transactions} />

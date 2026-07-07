@@ -32,9 +32,9 @@ export function AuthCard({ content, onSignUp, onSubmit }) {
 
       <p className="mt-5 text-center text-[10px] font-semibold text-ink-muted">
         {content.signUpPrompt}{' '}
-        <button className="font-black text-brand hover:text-brand-dark" onClick={onSignUp} type="button">
+        <Button className="text-[10px]" onClick={onSignUp} type="button" variant="textGhost">
           {content.signUpLabel}
-        </button>
+        </Button>
       </p>
     </article>
   )

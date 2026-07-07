@@ -4,6 +4,7 @@ import { TransferForm } from '../components/bank/TransferForm'
 import { TransferSummary } from '../components/bank/TransferSummary'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { transferContent } from '../config/bankFlow'
 
 const initialForm = {
   recipient: 'james.r@example.com',
@@ -71,7 +72,7 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
         <TransferForm account={account} checks={checks} error={error} form={form} onChange={handleChange} onSubmit={handleSubmit} recipient={recipient} />
       </Card>
 
-      <RecentRecipients onSelect={handleSelectRecipient} recipients={recentRecipients} />
+      <RecentRecipients content={transferContent.recentRecipients} onSelect={handleSelectRecipient} recipients={recentRecipients} />
 
       {showConfirm && (
         <div className="fixed inset-0 z-20 grid place-items-center bg-ink/45 p-5 backdrop-blur-sm">
