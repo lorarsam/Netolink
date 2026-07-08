@@ -1,7 +1,7 @@
 import { Button } from '../ui/Button'
 import { TextField } from '../forms/TextField'
 
-export function AuthCard({ content, onSignUp, onSubmit }) {
+export function AuthCard({ content, error, form, isSubmitting = false, onChange, onSignUp, onSubmit }) {
   return (
     <article className="w-full rounded-[1.6rem] bg-white px-7 py-8 text-ink shadow-card sm:px-8">
       <header className="text-center">
@@ -19,14 +19,18 @@ export function AuthCard({ content, onSignUp, onSubmit }) {
             id={field.id}
             label={field.label}
             name={field.name}
+            onChange={onChange}
             placeholder={field.placeholder}
             rightLabel={field.id === 'password' ? <a className="text-[9px] font-extrabold text-brand hover:text-brand-dark" href="#forgot-password">{content.forgotPasswordLabel}</a> : null}
             type={field.type}
+            value={form[field.name] || ''}
           />
         ))}
 
-        <Button className="mt-2 w-full py-2.5 text-[11px]" type="submit">
-          {content.submitLabel}
+        {error && <p className="rounded-xl bg-blush px-3 py-2 text-[10px] font-bold text-brand-dark">{error}</p>}
+
+        <Button className="mt-2 w-full py-2.5 text-[11px]" disabled={isSubmitting} type="submit">
+          {isSubmitting ? 'Validando...' : content.submitLabel}
         </Button>
       </form>
 

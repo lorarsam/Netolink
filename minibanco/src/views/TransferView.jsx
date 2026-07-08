@@ -15,6 +15,7 @@ const initialForm = {
 export function TransferView({ account, currentUser, onCancel, onConfirm, users }) {
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
 
   const availableRecipients = useMemo(() => users.filter((item) => item.id !== currentUser.id), [currentUser.id, users])
@@ -49,8 +50,16 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
     setShowConfirm(true)
   }
 
-  function handleConfirm() {
-    onConfirm({ amount, description: form.description, recipient })
+  async function handleConfirm() {
+    try {
+      setIsSubmitting(true)
+      await onConfirm({ amount, description: form.description, recipient })
+    } catch (transferError) {
+      setError(transferError.message || transferContent.form.errorMessage)
+      setShowConfirm(false)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   function handleSelectRecipient(selectedRecipient) {
@@ -71,7 +80,7 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
           <Button className="justify-center" onClick={onCancel} type="button" variant="ghost">{transferContent.header.cancelLabel}</Button>
         </div>
 
-        <TransferForm account={account} amount={amount} content={transferContent.form} error={error} form={form} onChange={handleChange} onSubmit={handleSubmit} recipient={recipient} summaryContent={transferContent.summary} users={availableRecipients} />
+        <TransferForm account={account} amount={amount} content={transferContent.form} error={error} form={form} isSubmitting={isSubmitting} onChange={handleChange} onSubmit={handleSubmit} recipient={recipient} summaryContent={transferContent.summary} users={availableRecipients} />
       </Card>
 
       <RecentRecipients content={transferContent.recentRecipients} onSelect={handleSelectRecipient} recipients={recentRecipients} />
@@ -80,6 +89,7 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
         <TransferConfirmModal
           amount={amount}
           content={transferContent.modal}
+          isSubmitting={isSubmitting}
           onCancel={() => setShowConfirm(false)}
           onConfirm={handleConfirm}
           recipient={recipient}

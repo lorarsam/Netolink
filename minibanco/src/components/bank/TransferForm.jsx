@@ -4,7 +4,7 @@ import { formatCurrency } from '../../utils/formatters'
 import { RecipientCombobox } from './RecipientCombobox'
 import { TransferSummary } from './TransferSummary'
 
-export function TransferForm({ account, amount, content, error, form, onChange, onSubmit, recipient, summaryContent, users }) {
+export function TransferForm({ account, amount, content, error, form, isSubmitting = false, onChange, onSubmit, recipient, summaryContent, users }) {
   return (
     <form className="grid gap-4" onSubmit={onSubmit}>
       {error && <div className="rounded-2xl bg-blush px-4 py-2.5 text-sm font-bold text-brand-dark">{error}</div>}
@@ -46,7 +46,7 @@ export function TransferForm({ account, amount, content, error, form, onChange, 
       </div>
 
       <TransferSummary amount={amount} content={summaryContent} recipient={recipient} />
-      <Button className="w-full py-3.5" type="submit">{content.submitLabel}</Button>
+      <Button className="w-full py-3.5" disabled={isSubmitting} type="submit">{isSubmitting ? 'Procesando...' : content.submitLabel}</Button>
     </form>
   )
 }

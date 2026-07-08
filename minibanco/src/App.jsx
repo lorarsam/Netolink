@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AppShell } from './components/app/AppShell'
-import { screens, transactionContent, transferSuccessContent } from './config/bankFlow'
-import { initialAccount } from './data/mockAccount'
-import { initialTransactions } from './data/mockTransactions'
-import { currentUser, registeredUsers } from './data/mockUsers'
+import { screens, transferSuccessContent } from './config/bankFlow'
+import { subscribeMovements, subscribeUserProfile, subscribeUsers, transferMoney } from './services/bankService'
+import { INITIAL_BALANCE, loginUser, logoutUser, registerUser, subscribeAuth } from './services/firebaseAuth'
 import { DashboardView } from './views/DashboardView'
 import { HistoryView } from './views/HistoryView'
 import { LoginView } from './views/LoginView'
@@ -20,76 +19,146 @@ const titles = {
 }
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [authUser, setAuthUser] = useState(null)
   const [screen, setScreen] = useState(screens.login)
-  const [account, setAccount] = useState(initialAccount)
-  const [user, setUser] = useState(currentUser)
-  const [users, setUsers] = useState(registeredUsers)
-  const [transactions, setTransactions] = useState(initialTransactions)
+  const [account, setAccount] = useState(null)
+  const [user, setUser] = useState(null)
+  const [users, setUsers] = useState([])
+  const [transactions, setTransactions] = useState([])
   const [lastTransfer, setLastTransfer] = useState(null)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [dataLoading, setDataLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [authError, setAuthError] = useState('')
+  const [dataError, setDataError] = useState('')
 
   const orderedTransactions = useMemo(() => sortByNewest(transactions), [transactions])
 
-  function handleLogin(event) {
-    event.preventDefault()
-    setIsAuthenticated(true)
-    setScreen(screens.dashboard)
+  function handleDataError(error) {
+    setDataError(error.message || 'No se pudieron sincronizar los datos.')
+    setDataLoading(false)
   }
 
-  function handleRegister(form) {
-    const newUser = {
-      id: `usr_${Date.now()}`,
-      name: form.name || 'Nuevo usuario',
-      email: form.email || 'nuevo@netolink.cl',
+  useEffect(() => {
+    return subscribeAuth((firebaseUser) => {
+      setAuthUser(firebaseUser)
+      setAuthLoading(false)
+
+      if (firebaseUser) {
+        setDataLoading(true)
+        setDataError('')
+        setScreen(screens.dashboard)
+        return
+      }
+
+      setUser(null)
+      setAccount(null)
+      setUsers([])
+      setTransactions([])
+      setLastTransfer(null)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!authUser) return undefined
+
+    const unsubscribeProfile = subscribeUserProfile(authUser.uid, (profile) => {
+      setUser(profile)
+      setAccount(profile ? toAccount(profile) : null)
+      setDataLoading(false)
+
+      if (!profile) {
+        setDataError('No existe el documento del usuario en Firestore.')
+      }
+    }, handleDataError)
+
+    const unsubscribeUsers = subscribeUsers(setUsers, handleDataError)
+    const unsubscribeMovements = subscribeMovements(authUser.uid, setTransactions, handleDataError)
+
+    return () => {
+      unsubscribeProfile()
+      unsubscribeUsers()
+      unsubscribeMovements()
     }
+  }, [authUser])
 
-    setUser(newUser)
-    setUsers((current) => [newUser, ...current])
-    setAccount({ ...initialAccount, ownerId: newUser.id, balance: 100000 })
-    setTransactions([])
-    setIsAuthenticated(true)
-    setScreen(screens.dashboard)
+  async function handleLogin(form) {
+    setIsSubmitting(true)
+    setAuthError('')
+
+    try {
+      await loginUser(form)
+    } catch (error) {
+      setAuthError(getAuthErrorMessage(error))
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
-  function handleLogout() {
-    setIsAuthenticated(false)
+  async function handleRegister(form) {
+    setIsSubmitting(true)
+    setAuthError('')
+
+    try {
+      if (!form.name.trim()) throw new Error('Ingresa tu nombre.')
+      await registerUser(form)
+    } catch (error) {
+      setAuthError(getAuthErrorMessage(error))
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  async function handleLogout() {
+    await logoutUser()
     setScreen(screens.login)
-    setLastTransfer(null)
   }
 
-  function handleConfirmTransfer(transfer) {
-    const movement = {
-      id: `TRX-${Date.now().toString().slice(-6)}`,
-      type: transactionContent.defaults.transferType,
-      counterparty: transfer.recipient.name,
-      description: transfer.description || transactionContent.defaults.transferDescription,
-      amount: transfer.amount,
-      date: new Date().toISOString(),
-      status: transactionContent.defaults.transferStatus,
-    }
+  async function handleConfirmTransfer(transfer) {
+    if (!user) throw new Error('La sesion no esta lista.')
 
-    setAccount((current) => ({ ...current, balance: current.balance - transfer.amount }))
-    setTransactions((current) => [movement, ...current])
-    setLastTransfer({ ...movement, recipient: transfer.recipient })
+    const movement = await transferMoney({
+      amount: transfer.amount,
+      description: transfer.description,
+      recipient: transfer.recipient,
+      sender: user,
+    })
+
+    setLastTransfer(movement)
     setScreen(screens.success)
   }
 
-  if (!isAuthenticated) {
+  if (authLoading) {
+    return <FullScreenState message="Validando sesion..." />
+  }
+
+  if (!authUser) {
     if (screen === screens.register) {
       return (
         <RegisterView
-          initialBalance={initialAccount.balance}
-          onBackToLogin={() => setScreen(screens.login)}
+          error={authError}
+          initialBalance={INITIAL_BALANCE}
+          isSubmitting={isSubmitting}
+          onBackToLogin={() => {
+            setAuthError('')
+            setScreen(screens.login)
+          }}
           onRegister={handleRegister}
         />
       )
     }
 
-    return <LoginView onLogin={handleLogin} onRegister={() => setScreen(screens.register)} />
+    return <LoginView error={authError} isSubmitting={isSubmitting} onLogin={handleLogin} onRegister={() => setScreen(screens.register)} />
+  }
+
+  if (dataLoading || !user || !account) {
+    return <FullScreenState message={dataError || 'Sincronizando datos bancarios...'} />
   }
 
   return (
     <AppShell activeScreen={screen} onLogout={handleLogout} onNavigate={setScreen} title={titles[screen] || 'Netolink'} user={user}>
+      {dataError && <div className="mb-5 rounded-2xl bg-blush px-4 py-3 text-sm font-bold text-brand-dark">{dataError}</div>}
+
       {screen === screens.dashboard && (
         <DashboardView
           account={account}
@@ -123,5 +192,35 @@ export default function App() {
         <HistoryView onDashboard={() => setScreen(screens.dashboard)} transactions={orderedTransactions} />
       )}
     </AppShell>
+  )
+}
+
+function toAccount(profile) {
+  return {
+    id: `acc_${profile.id}`,
+    ownerId: profile.id,
+    name: 'Cuenta Principal',
+    number: '**** 4209',
+    balance: profile.balance,
+    currency: 'CLP',
+  }
+}
+
+function getAuthErrorMessage(error) {
+  if (error.code === 'auth/invalid-credential') return 'Email o password incorrectos.'
+  if (error.code === 'auth/email-already-in-use') return 'Ese email ya esta registrado.'
+  if (error.code === 'auth/weak-password') return 'La password debe tener al menos 6 caracteres.'
+  if (error.code === 'auth/invalid-email') return 'Ingresa un email valido.'
+
+  return error.message || 'No se pudo completar la operacion.'
+}
+
+function FullScreenState({ message }) {
+  return (
+    <main className="grid min-h-screen place-items-center bg-brand px-4 text-center text-white">
+      <div className="rounded-3xl bg-white/10 p-8 shadow-card backdrop-blur">
+        <p className="text-lg font-black">{message}</p>
+      </div>
+    </main>
   )
 }

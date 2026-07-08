@@ -12,7 +12,7 @@ const initialForm = {
   password: '',
 }
 
-export function RegisterView({ initialBalance, onBackToLogin, onRegister }) {
+export function RegisterView({ error, initialBalance, isSubmitting = false, onBackToLogin, onRegister }) {
   const [form, setForm] = useState(initialForm)
 
   function handleChange(event) {
@@ -43,13 +43,15 @@ export function RegisterView({ initialBalance, onBackToLogin, onRegister }) {
             <TextField autoComplete="email" icon="mail" id="email" label="Email" name="email" onChange={handleChange} placeholder="tu@email.cl" type="email" value={form.email} />
             <TextField actionIcon="eye" autoComplete="new-password" icon="lock" id="password" label="Password" name="password" onChange={handleChange} placeholder="Crea una password" type="password" value={form.password} />
 
+            {error && <p className="rounded-xl bg-blush px-3 py-2 text-xs font-bold text-brand-dark">{error}</p>}
+
             <div className="rounded-2xl bg-cream-field p-4 text-sm">
               <p className="font-black text-brand-dark">Saldo inicial</p>
               <p className="mt-1 text-2xl font-black">{formatCurrency(initialBalance)}</p>
             </div>
 
-            <Button type="submit">Crear usuario y entrar</Button>
-            <Button onClick={onBackToLogin} type="button" variant="ghost">Ya tengo cuenta</Button>
+            <Button disabled={isSubmitting} type="submit">{isSubmitting ? 'Creando...' : 'Crear usuario y entrar'}</Button>
+            <Button disabled={isSubmitting} onClick={onBackToLogin} type="button" variant="ghost">Ya tengo cuenta</Button>
           </form>
         </Card>
       </section>
