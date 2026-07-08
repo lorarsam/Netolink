@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { AccountOperationModal } from '../components/bank/AccountOperationModal'
 import { BalanceCard } from '../components/bank/BalanceCard'
 import { MetricCard } from '../components/bank/MetricCard'
 import { MovementList } from '../components/bank/MovementList'
@@ -6,9 +8,10 @@ import { Card } from '../components/ui/Card'
 import { dashboardContent, transactionContent } from '../config/bankFlow'
 import { formatCurrency } from '../utils/formatters'
 
-export function DashboardView({ account, onHistory, onTransfer, transactions }) {
-  const incoming = transactions.filter((item) => item.type === transactionContent.typeValues.incoming).reduce((total, item) => total + item.amount, 0)
-  const outgoing = transactions.filter((item) => item.type === transactionContent.typeValues.outgoing).reduce((total, item) => total + item.amount, 0)
+export function DashboardView({ account, isSubmitting, onAccountOperation, onHistory, transactions }) {
+  const [operationMode, setOperationMode] = useState(null)
+  const incoming = transactions.filter((item) => isIncomingMovement(item.type)).reduce((total, item) => total + item.amount, 0)
+  const outgoing = transactions.filter((item) => isOutgoingMovement(item.type)).reduce((total, item) => total + item.amount, 0)
   const totalMoved = incoming + outgoing
   const netFlow = incoming - outgoing
   const outgoingShare = totalMoved > 0 ? Math.round((outgoing / totalMoved) * 100) : 0
@@ -22,9 +25,14 @@ export function DashboardView({ account, onHistory, onTransfer, transactions }) 
     outgoingShare,
   }
 
+  async function handleConfirmOperation(operation) {
+    await onAccountOperation(operation)
+    setOperationMode(null)
+  }
+
   return (
     <div className="grid gap-6">
-      <BalanceCard account={account} content={dashboardContent.balance} onHistory={onHistory} onTransfer={onTransfer} />
+      <BalanceCard account={account} content={dashboardContent.balance} onDeposit={() => setOperationMode('deposit')} onWithdraw={() => setOperationMode('withdraw')} />
 
       <div className="grid gap-5 md:grid-cols-3">
         {dashboardContent.metrics.map((metric) => (
@@ -51,8 +59,27 @@ export function DashboardView({ account, onHistory, onTransfer, transactions }) 
         </div>
         <MovementList emptyMessage={transactionContent.emptyMessage} limit={4} transactions={transactions} typeLabels={transactionContent.typeLabels} typePresentation={transactionContent.typePresentation} />
       </Card>
+
+      {operationMode ? (
+        <AccountOperationModal
+          account={account}
+          content={dashboardContent.operations}
+          isSubmitting={isSubmitting}
+          mode={operationMode}
+          onCancel={() => setOperationMode(null)}
+          onConfirm={handleConfirmOperation}
+        />
+      ) : null}
     </div>
   )
+}
+
+function isIncomingMovement(type) {
+  return type === transactionContent.typeValues.incoming || type === transactionContent.typeValues.deposit
+}
+
+function isOutgoingMovement(type) {
+  return type === transactionContent.typeValues.outgoing || type === transactionContent.typeValues.withdraw
 }
 
 function getMetricChange(metric, values) {

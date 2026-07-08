@@ -8,7 +8,7 @@ export function TransactionFilters({ filters, onChange, toggleLabel, value }) {
     .filter(Boolean)
 
   return (
-    <div className="rounded-2xl bg-white p-3 shadow-soft sm:p-4">
+    <div className="rounded-2xl bg-cream-card p-3 shadow-soft sm:p-4">
       <button
         aria-expanded={isOpen}
         className="flex w-full items-center justify-between gap-3 rounded-2xl bg-cream-field px-4 py-3 text-left lg:hidden"
@@ -19,7 +19,7 @@ export function TransactionFilters({ filters, onChange, toggleLabel, value }) {
           <span className="block text-xs font-black uppercase tracking-[0.12em] text-ink-muted">{toggleLabel}</span>
           <span className="mt-1 block truncate text-sm font-extrabold text-ink">{selectedLabels.join(' · ')}</span>
         </span>
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white text-lg font-black text-brand-dark">{isOpen ? '-' : '+'}</span>
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cream-card text-lg font-black text-brand-dark">{isOpen ? '-' : '+'}</span>
       </button>
 
       <div className={`${isOpen ? 'grid' : 'hidden'} mt-4 gap-4 lg:mt-0 lg:grid lg:grid-cols-3`}>

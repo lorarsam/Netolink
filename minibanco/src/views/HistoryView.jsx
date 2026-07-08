@@ -9,8 +9,8 @@ import { formatCurrency } from '../utils/formatters'
 export function HistoryView({ onDashboard, transactions }) {
   const [filters, setFilters] = useState(() => getInitialFilters(historyContent.filters))
   const filteredTransactions = useMemo(() => applyFilters(transactions, filters), [filters, transactions])
-  const incoming = filteredTransactions.filter((item) => item.type === transactionContent.typeValues.incoming).reduce((total, item) => total + item.amount, 0)
-  const outgoing = filteredTransactions.filter((item) => item.type === transactionContent.typeValues.outgoing).reduce((total, item) => total + item.amount, 0)
+  const incoming = filteredTransactions.filter((item) => isIncomingMovement(item.type)).reduce((total, item) => total + item.amount, 0)
+  const outgoing = filteredTransactions.filter((item) => isOutgoingMovement(item.type)).reduce((total, item) => total + item.amount, 0)
 
   function handleFilterChange(filterId, value) {
     setFilters((current) => ({ ...current, [filterId]: value }))
@@ -66,9 +66,17 @@ function applyFilters(transactions, filters) {
   })
 }
 
+function isIncomingMovement(type) {
+  return type === transactionContent.typeValues.incoming || type === transactionContent.typeValues.deposit
+}
+
+function isOutgoingMovement(type) {
+  return type === transactionContent.typeValues.outgoing || type === transactionContent.typeValues.withdraw
+}
+
 function Stat({ label, tone = 'text-ink', value }) {
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-soft">
+    <div className="rounded-2xl bg-cream-card p-4 shadow-soft">
       <p className="text-xs font-black uppercase text-ink-muted">{label}</p>
       <p className={`mt-2 break-words text-xl font-black sm:text-2xl ${tone}`}>{value}</p>
     </div>

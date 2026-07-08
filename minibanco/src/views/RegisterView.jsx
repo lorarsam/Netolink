@@ -32,7 +32,7 @@ export function RegisterView({ error, initialBalance, isSubmitting = false, onBa
           <BrandLogo compact {...loginContent.brand} />
         </div>
 
-        <Card className="bg-white">
+        <Card className="bg-cream-card">
           <header className="text-center">
             <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Crear cuenta</h1>
             <p className="mt-2 text-sm text-ink-muted">Alta en Firebase Auth, documento Firestore y saldo inicial.</p>

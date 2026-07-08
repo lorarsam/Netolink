@@ -3,7 +3,7 @@ import { TextField } from '../forms/TextField'
 
 export function AuthCard({ content, error, form, isSubmitting = false, onChange, onSignUp, onSubmit }) {
   return (
-    <article className="w-full rounded-[1.6rem] bg-white px-7 py-8 text-ink shadow-card sm:px-8">
+    <article className="w-full rounded-[1.6rem] bg-cream-card px-7 py-8 text-ink shadow-card sm:px-8">
       <header className="text-center">
         <h1 className="text-[1.7rem] font-black leading-none tracking-[-0.04em] sm:text-3xl">{content.title}</h1>
         <p className="mt-2 text-[11px] font-medium text-ink-muted">{content.subtitle}</p>

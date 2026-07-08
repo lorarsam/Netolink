@@ -71,7 +71,7 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
 
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(28rem,0.72fr)] xl:items-start">
-      <Card interactive className="bg-white p-5 sm:p-6">
+      <Card interactive className="bg-cream-card p-5 sm:p-6">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <h2 className="break-words text-xl font-black tracking-tight sm:text-2xl">{transferContent.header.title}</h2>

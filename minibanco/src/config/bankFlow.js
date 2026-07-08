@@ -41,9 +41,42 @@ export const dashboardContent = {
     title: 'Actividad reciente',
   },
   balance: {
-    historyLabel: 'Historial',
+    depositLabel: 'Depositar',
     label: 'Saldo total',
-    transferLabel: 'Transferir',
+    withdrawLabel: 'Retirar',
+  },
+  operations: {
+    deposit: {
+      amountLabel: 'Cantidad a depositar',
+      amountPlaceholder: '0',
+      cardLabel: 'Agregar tarjeta',
+      cardPlaceholder: '16 digitos de la tarjeta',
+      confirmLabel: 'Confirmar deposito',
+      description: 'Ingresa el monto y una tarjeta simulada para abonar saldo a tu cuenta.',
+      submittingLabel: 'Depositando...',
+      title: 'Depositar dinero',
+    },
+    errors: {
+      amount: 'Ingresa una cantidad mayor a cero.',
+      card: 'La tarjeta debe tener exactamente 16 digitos.',
+      insufficientBalance: 'No tienes saldo suficiente para retirar esa cantidad.',
+      noBalance: 'No tienes saldo disponible para retirar.',
+    },
+    form: {
+      amountPrefix: '$',
+      cancelLabel: 'Cancelar',
+      cardHelper: 'Los datos de la tarjeta son solo una simulacion.',
+    },
+    withdraw: {
+      amountLabel: 'Cantidad a retirar',
+      amountPlaceholder: '0',
+      cardLabel: 'Agregar tarjeta',
+      cardPlaceholder: '16 digitos de la tarjeta',
+      confirmLabel: 'Confirmar retiro',
+      description: 'Ingresa el monto y una tarjeta simulada para retirar saldo de tu cuenta.',
+      submittingLabel: 'Retirando...',
+      title: 'Retirar dinero',
+    },
   },
   metrics: [
     {
@@ -88,10 +121,19 @@ export const transactionContent = {
   },
   emptyMessage: 'No hay movimientos para mostrar.',
   typeLabels: {
+    deposito: 'Deposito',
     egreso: 'Egreso',
     ingreso: 'Ingreso',
+    retiro: 'Retiro',
   },
   typePresentation: {
+    deposito: {
+      amountClassName: 'text-teal',
+      icon: 'arrowUp',
+      iconClassName: 'bg-mint text-teal',
+      sign: '+',
+      status: 'success',
+    },
     egreso: {
       amountClassName: 'text-brand-dark',
       icon: 'arrowDown',
@@ -106,10 +148,19 @@ export const transactionContent = {
       sign: '+',
       status: 'success',
     },
+    retiro: {
+      amountClassName: 'text-brand-dark',
+      icon: 'arrowDown',
+      iconClassName: 'bg-blush text-brand-dark',
+      sign: '-',
+      status: 'danger',
+    },
   },
   typeValues: {
+    deposit: 'deposito',
     incoming: 'ingreso',
     outgoing: 'egreso',
+    withdraw: 'retiro',
   },
 }
 
@@ -124,8 +175,10 @@ export const historyContent = {
       label: 'Tipo',
       options: [
         { label: 'Todos', value: 'all' },
+        { label: 'Depositos', value: 'deposito' },
         { label: 'Ingresos', value: 'ingreso' },
         { label: 'Egresos', value: 'egreso' },
+        { label: 'Retiros', value: 'retiro' },
       ],
     },
     {

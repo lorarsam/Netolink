@@ -8,7 +8,7 @@ export function MovementList({ emptyMessage, limit, transactions, typeLabels = {
 
   if (!items.length) {
     return (
-      <div className="rounded-3xl border border-line/80 bg-white p-6 text-center text-sm font-bold text-ink-muted shadow-soft">
+      <div className="rounded-3xl border border-line/80 bg-cream-card p-6 text-center text-sm font-bold text-ink-muted shadow-soft">
         {emptyMessage}
       </div>
     )
@@ -28,7 +28,7 @@ function MovementItem({ transaction, typeLabels, typePresentation }) {
   const typeLabel = typeLabels[transaction.type] || transaction.type
 
   return (
-    <div className="grid gap-3 rounded-2xl border border-line/80 bg-white p-3 shadow-soft transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-4 sm:rounded-3xl sm:p-4">
+    <div className="grid gap-3 rounded-2xl border border-line/80 bg-cream-card p-3 shadow-soft transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-4 sm:rounded-3xl sm:p-4">
       <div className={`grid h-10 w-10 place-items-center rounded-2xl sm:h-11 sm:w-11 ${type.iconClassName}`}>
         <Icon name={type.icon} className="h-5 w-5" />
       </div>

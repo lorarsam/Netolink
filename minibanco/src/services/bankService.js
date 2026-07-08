@@ -116,6 +116,53 @@ export async function transferMoney({ amount, description, recipient, sender }) 
   }
 }
 
+export async function createAccountMovement({ amount, cardNumber, mode, user }) {
+  const userRef = doc(db, 'users', user.id)
+  const movementRef = doc(collection(db, 'users', user.id, 'movimientos'))
+  const operationDate = new Date()
+  const isDeposit = mode === 'deposit'
+  const movementType = isDeposit ? 'deposito' : 'retiro'
+  const operationLabel = isDeposit ? 'Deposito' : 'Retiro'
+  const maskedCard = `**** **** **** ${cardNumber.slice(-4)}`
+
+  await runTransaction(db, async (transaction) => {
+    const userSnapshot = await transaction.get(userRef)
+
+    if (!userSnapshot.exists()) throw new Error('No se encontro la cuenta.')
+
+    const userData = userSnapshot.data()
+    const currentBalance = userData.saldo || 0
+
+    if (!isDeposit && currentBalance <= 0) throw new Error('No tienes saldo disponible para retirar.')
+    if (!isDeposit && amount > currentBalance) throw new Error('No tienes saldo suficiente para retirar esa cantidad.')
+
+    transaction.update(userRef, {
+      saldo: isDeposit ? currentBalance + amount : currentBalance - amount,
+      updatedAt: serverTimestamp(),
+    })
+
+    transaction.set(movementRef, {
+      tipo: movementType,
+      contraparteNombre: operationLabel,
+      contraparteEmail: maskedCard,
+      monto: amount,
+      descripcion: `${operationLabel} con tarjeta ${maskedCard}`,
+      fecha: serverTimestamp(),
+      status: completedStatus,
+    })
+  })
+
+  return {
+    id: movementRef.id,
+    type: movementType,
+    counterparty: operationLabel,
+    description: `${operationLabel} con tarjeta ${maskedCard}`,
+    amount,
+    date: operationDate.toISOString(),
+    status: completedStatus,
+  }
+}
+
 function mapUser(id, data) {
   return {
     id,

@@ -3,7 +3,7 @@ import { Button } from '../ui/Button'
 import { Card } from '../ui/Card'
 import { Icon } from '../ui/Icon'
 
-export function BalanceCard({ account, content, onHistory, onTransfer }) {
+export function BalanceCard({ account, content, onDeposit, onWithdraw }) {
   return (
     <Card interactive className="overflow-hidden">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
@@ -20,8 +20,8 @@ export function BalanceCard({ account, content, onHistory, onTransfer }) {
           </div>
         </div>
         <div className="grid gap-3 sm:flex sm:flex-wrap">
-          <Button className="justify-center" onClick={onTransfer}>{content.transferLabel}</Button>
-          <Button className="justify-center" onClick={onHistory} variant="ghost">{content.historyLabel}</Button>
+          <Button className="justify-center" onClick={onDeposit}>{content.depositLabel}</Button>
+          <Button className="justify-center" onClick={onWithdraw} variant="ghost">{content.withdrawLabel}</Button>
         </div>
       </div>
     </Card>

@@ -81,7 +81,7 @@ export function InputField({
           onChange={handleChange}
         />
         {suffix && <span className="shrink-0 text-sm font-bold text-ink-muted">{suffix}</span>}
-        {badge && <span className="hidden shrink-0 rounded-full bg-white px-3 py-1 text-[11px] font-black normal-case tracking-normal text-teal sm:inline-flex">{badge}</span>}
+        {badge && <span className="hidden shrink-0 rounded-full bg-cream-card px-3 py-1 text-[11px] font-black normal-case tracking-normal text-teal sm:inline-flex">{badge}</span>}
         {iconRight && <Icon name={iconRight} className={`${styles.icon} shrink-0`} />}
         {action}
       </span>

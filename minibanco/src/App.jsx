@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AppShell } from './components/app/AppShell'
 import { screens, transferSuccessContent } from './config/bankFlow'
-import { subscribeMovements, subscribeUserProfile, subscribeUsers, transferMoney } from './services/bankService'
+import { createAccountMovement, subscribeMovements, subscribeUserProfile, subscribeUsers, transferMoney } from './services/bankService'
 import { INITIAL_BALANCE, loginUser, logoutUser, registerUser, subscribeAuth } from './services/firebaseAuth'
 import { DashboardView } from './views/DashboardView'
 import { HistoryView } from './views/HistoryView'
@@ -128,6 +128,18 @@ export default function App() {
     setScreen(screens.success)
   }
 
+  async function handleAccountOperation(operation) {
+    if (!user) throw new Error('La sesion no esta lista.')
+
+    setIsSubmitting(true)
+
+    try {
+      await createAccountMovement({ ...operation, user })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   if (authLoading) {
     return <FullScreenState message="Validando sesion..." />
   }
@@ -162,8 +174,9 @@ export default function App() {
       {screen === screens.dashboard && (
         <DashboardView
           account={account}
+          isSubmitting={isSubmitting}
+          onAccountOperation={handleAccountOperation}
           onHistory={() => setScreen(screens.history)}
-          onTransfer={() => setScreen(screens.transfer)}
           transactions={orderedTransactions}
         />
       )}
@@ -217,8 +230,8 @@ function getAuthErrorMessage(error) {
 
 function FullScreenState({ message }) {
   return (
-    <main className="grid min-h-screen place-items-center bg-brand px-4 text-center text-white">
-      <div className="rounded-3xl bg-white/10 p-8 shadow-card backdrop-blur">
+    <main className="grid min-h-screen place-items-center bg-brand px-4 text-center text-cream-card">
+      <div className="rounded-3xl bg-cream-card/10 p-8 shadow-card backdrop-blur">
         <p className="text-lg font-black">{message}</p>
       </div>
     </main>

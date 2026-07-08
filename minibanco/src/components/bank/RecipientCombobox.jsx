@@ -26,10 +26,10 @@ export function RecipientCombobox({ content, name, onChange, recipient, users, v
   }
 
   const dropdown = shouldShowSuggestion ? (
-    <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-line bg-white shadow-card" role="listbox">
+    <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-line bg-cream-card shadow-card" role="listbox">
       {suggestedUser ? (
         <Button className="min-w-0" onMouseDown={(event) => event.preventDefault()} onClick={() => handleSelect(suggestedUser)} type="button" variant="recipientOption">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink text-xs font-black text-white">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink text-xs font-black text-cream-card">
             {suggestedUser.name.slice(0, 1)}
           </span>
           <span className="min-w-0">

@@ -5,7 +5,7 @@ import { TransferSummary } from './TransferSummary'
 export function TransferConfirmModal({ amount, content, isSubmitting = false, onCancel, onConfirm, recipient, remainingBalance, summaryContent }) {
   return (
     <div className="fixed inset-0 z-40 grid place-items-center overflow-y-auto bg-ink/45 p-4 backdrop-blur-sm sm:p-5">
-      <Card className="max-h-[calc(100vh-2rem)] w-full max-w-md overflow-y-auto bg-white text-center">
+      <Card className="max-h-[calc(100vh-2rem)] w-full max-w-md overflow-y-auto bg-cream-card text-center">
         <h3 className="text-2xl font-black">{content.title}</h3>
         <p className="mt-2 text-sm text-ink-muted">{content.subtitle}</p>
         <div className="my-6 text-left">

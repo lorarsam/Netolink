@@ -33,7 +33,7 @@ export function Navbar({ actions = [], logoutItem, onLogout, searchPlaceholder, 
             aria-expanded={isProfileOpen}
             aria-haspopup="menu"
             aria-label={profileLabel}
-            className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-brand text-sm font-black text-white transition hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/30"
+            className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-brand text-sm font-black text-cream-card transition hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/30"
             onClick={() => setIsProfileOpen((current) => !current)}
             title={profileLabel}
             type="button"
@@ -42,7 +42,7 @@ export function Navbar({ actions = [], logoutItem, onLogout, searchPlaceholder, 
           </button>
 
           {isProfileOpen && logoutItem && onLogout ? (
-            <div className="absolute right-0 top-full z-40 mt-3 min-w-44 rounded-2xl border border-line bg-white p-2 shadow-card" role="menu">
+            <div className="absolute right-0 top-full z-40 mt-3 min-w-44 rounded-2xl border border-line bg-cream-card p-2 shadow-card" role="menu">
               <button
                 className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-extrabold text-brand transition hover:bg-blush hover:text-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30"
                 onClick={handleLogout}

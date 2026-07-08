@@ -10,7 +10,7 @@ export function TransferSuccessView({ content, lastTransfer, onDashboard, onHist
   const transferType = viewContent.details.typeLabels[lastTransfer.type] || lastTransfer.type
 
   return (
-    <Card className="mx-auto w-full max-w-5xl bg-white px-4 py-8 text-center shadow-card sm:px-12 sm:py-10 lg:px-16">
+    <Card className="mx-auto w-full max-w-5xl bg-cream-card px-4 py-8 text-center shadow-card sm:px-12 sm:py-10 lg:px-16">
       <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-teal/20 text-teal sm:h-20 sm:w-20">
         <Icon name="checkCircle" className="h-10 w-10 sm:h-12 sm:w-12" />
       </span>
