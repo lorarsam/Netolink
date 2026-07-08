@@ -3,12 +3,12 @@ import { MetricCard } from '../components/bank/MetricCard'
 import { MovementList } from '../components/bank/MovementList'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
-import { dashboardContent } from '../config/bankFlow'
+import { dashboardContent, transactionContent } from '../config/bankFlow'
 import { formatCurrency } from '../utils/formatters'
 
 export function DashboardView({ account, onHistory, onTransfer, transactions }) {
-  const incoming = transactions.filter((item) => item.type === 'ingreso').reduce((total, item) => total + item.amount, 0)
-  const outgoing = transactions.filter((item) => item.type === 'egreso').reduce((total, item) => total + item.amount, 0)
+  const incoming = transactions.filter((item) => item.type === transactionContent.typeValues.incoming).reduce((total, item) => total + item.amount, 0)
+  const outgoing = transactions.filter((item) => item.type === transactionContent.typeValues.outgoing).reduce((total, item) => total + item.amount, 0)
   const totalMoved = incoming + outgoing
   const netFlow = incoming - outgoing
   const outgoingShare = totalMoved > 0 ? Math.round((outgoing / totalMoved) * 100) : 0
@@ -49,7 +49,7 @@ export function DashboardView({ account, onHistory, onTransfer, transactions }) 
           </div>
           <Button onClick={onHistory} type="button" variant="ghost">{dashboardContent.activity.actionLabel}</Button>
         </div>
-        <MovementList limit={4} transactions={transactions} />
+        <MovementList emptyMessage={transactionContent.emptyMessage} limit={4} transactions={transactions} typeLabels={transactionContent.typeLabels} typePresentation={transactionContent.typePresentation} />
       </Card>
     </div>
   )

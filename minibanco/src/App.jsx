@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AppShell } from './components/app/AppShell'
-import { screens } from './config/bankFlow'
+import { screens, transactionContent, transferSuccessContent } from './config/bankFlow'
 import { initialAccount } from './data/mockAccount'
 import { initialTransactions } from './data/mockTransactions'
 import { currentUser, registeredUsers } from './data/mockUsers'
@@ -60,12 +60,12 @@ export default function App() {
   function handleConfirmTransfer(transfer) {
     const movement = {
       id: `TRX-${Date.now().toString().slice(-6)}`,
-      type: 'egreso',
+      type: transactionContent.defaults.transferType,
       counterparty: transfer.recipient.name,
-      description: transfer.description || 'Transferencia Netolink',
+      description: transfer.description || transactionContent.defaults.transferDescription,
       amount: transfer.amount,
       date: new Date().toISOString(),
-      status: 'Completado',
+      status: transactionContent.defaults.transferStatus,
     }
 
     setAccount((current) => ({ ...current, balance: current.balance - transfer.amount }))
@@ -111,6 +111,7 @@ export default function App() {
 
       {screen === screens.success && lastTransfer && (
         <TransferSuccessView
+          content={transferSuccessContent}
           lastTransfer={lastTransfer}
           onDashboard={() => setScreen(screens.dashboard)}
           onHistory={() => setScreen(screens.history)}

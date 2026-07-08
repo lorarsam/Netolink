@@ -1,38 +1,31 @@
 import { formatCurrency, formatDateTime } from '../../utils/formatters'
+import { transactionContent } from '../../config/bankFlow'
 import { Icon } from '../ui/Icon'
 import { StatusBadge } from '../ui/StatusBadge'
 
-const movementTypes = {
-  egreso: {
-    amountClassName: 'text-brand-dark',
-    icon: 'arrowDown',
-    iconClassName: 'bg-blush text-brand-dark',
-    sign: '-',
-    status: 'danger',
-  },
-  ingreso: {
-    amountClassName: 'text-teal',
-    icon: 'arrowUp',
-    iconClassName: 'bg-mint text-teal',
-    sign: '+',
-    status: 'success',
-  },
-}
-
-export function MovementList({ limit, transactions }) {
+export function MovementList({ emptyMessage, limit, transactions, typeLabels = {}, typePresentation = transactionContent.typePresentation }) {
   const items = limit ? transactions.slice(0, limit) : transactions
+
+  if (!items.length) {
+    return (
+      <div className="rounded-3xl border border-line/80 bg-white p-6 text-center text-sm font-bold text-ink-muted shadow-soft">
+        {emptyMessage}
+      </div>
+    )
+  }
 
   return (
     <div className="grid gap-3">
       {items.map((transaction) => (
-        <MovementItem key={transaction.id} transaction={transaction} />
+        <MovementItem key={transaction.id} transaction={transaction} typeLabels={typeLabels} typePresentation={typePresentation} />
       ))}
     </div>
   )
 }
 
-function MovementItem({ transaction }) {
-  const type = movementTypes[transaction.type] || movementTypes.egreso
+function MovementItem({ transaction, typeLabels, typePresentation }) {
+  const type = typePresentation[transaction.type] || typePresentation[transactionContent.defaults.transferType]
+  const typeLabel = typeLabels[transaction.type] || transaction.type
 
   return (
     <div className="grid gap-4 rounded-3xl border border-line/80 bg-white p-4 shadow-soft transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card sm:grid-cols-[auto_1fr_auto] sm:items-center">
@@ -48,7 +41,7 @@ function MovementItem({ transaction }) {
             <p>{formatDateTime(transaction.date)}</p>
           </div>
         </div>
-        <StatusBadge variant={type.status}>{transaction.type}</StatusBadge>
+        <StatusBadge variant={type.status}>{typeLabel}</StatusBadge>
       </div>
       <p className={`text-left text-lg font-black sm:text-right ${type.amountClassName}`}>
         {type.sign}{formatCurrency(transaction.amount)}

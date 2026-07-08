@@ -79,9 +79,79 @@ export const dashboardContent = {
   ],
 }
 
+export const transactionContent = {
+  defaults: {
+    transferDescription: 'Transferencia Netolink',
+    transferStatus: 'Completado',
+    transferType: 'egreso',
+  },
+  emptyMessage: 'No hay movimientos para mostrar.',
+  typeLabels: {
+    egreso: 'Egreso',
+    ingreso: 'Ingreso',
+  },
+  typePresentation: {
+    egreso: {
+      amountClassName: 'text-brand-dark',
+      icon: 'arrowDown',
+      iconClassName: 'bg-blush text-brand-dark',
+      sign: '-',
+      status: 'danger',
+    },
+    ingreso: {
+      amountClassName: 'text-teal',
+      icon: 'arrowUp',
+      iconClassName: 'bg-mint text-teal',
+      sign: '+',
+      status: 'success',
+    },
+  },
+  typeValues: {
+    incoming: 'ingreso',
+    outgoing: 'egreso',
+  },
+}
+
 export const historyContent = {
   backLabel: 'Volver al Dashboard',
-  filters: ['Tipo: todos', 'Fecha: recientes', 'Orden: descendente'],
+  emptyMessage: 'No hay movimientos para los filtros seleccionados.',
+  filters: [
+    {
+      defaultValue: 'all',
+      id: 'type',
+      label: 'Tipo',
+      options: [
+        { label: 'Todos', value: 'all' },
+        { label: 'Ingresos', value: 'ingreso' },
+        { label: 'Egresos', value: 'egreso' },
+      ],
+    },
+    {
+      defaultValue: 'newest',
+      id: 'dateOrder',
+      label: 'Fecha',
+      options: [
+        { label: 'Recientes', value: 'newest' },
+        { label: 'Antiguas', value: 'oldest' },
+      ],
+    },
+    {
+      defaultValue: 'date',
+      id: 'sortBy',
+      label: 'Orden',
+      options: [
+        { label: 'Por fecha', value: 'date' },
+        { label: 'Mayor monto', value: 'highestAmount' },
+        { label: 'Menor monto', value: 'lowestAmount' },
+      ],
+    },
+  ],
+  filterValues: {
+    allTypes: 'all',
+    highestAmount: 'highestAmount',
+    lowestAmount: 'lowestAmount',
+    oldestDate: 'oldest',
+  },
   stats: {
     incoming: 'Ingresos',
     outgoing: 'Egresos',
@@ -135,4 +205,26 @@ export const transferContent = {
     title: 'Resumen de transferencia',
     totalLabel: 'Total',
   },
+}
+
+export const transferSuccessContent = {
+  actions: {
+    dashboardLabel: 'Dashboard',
+    historyLabel: 'Ver historial',
+    transferAgainLabel: 'Otra transferencia',
+  },
+  description: (recipientName) => `El monto fue enviado correctamente a ${recipientName}. La transaccion quedo registrada en tu historial.`,
+  details: {
+    amountLabel: 'Monto',
+    dateLabel: 'Fecha',
+    idLabel: 'ID de transaccion',
+    recipientLabel: 'Destinatario',
+    title: 'Detalles de la transaccion',
+    typeLabel: 'Tipo',
+    typeLabels: {
+      egreso: 'Egreso',
+      ingreso: 'Ingreso',
+    },
+  },
+  title: 'Transferencia exitosa',
 }
