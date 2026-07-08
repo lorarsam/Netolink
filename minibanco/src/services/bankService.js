@@ -57,10 +57,12 @@ export async function transferMoney({ amount, description, recipient, sender }) 
 
     transaction.update(senderRef, {
       saldo: senderData.saldo - amount,
+      lastTransferId: transferRef.id,
       updatedAt: serverTimestamp(),
     })
     transaction.update(recipientRef, {
       saldo: recipientData.saldo + amount,
+      lastTransferId: transferRef.id,
       updatedAt: serverTimestamp(),
     })
 

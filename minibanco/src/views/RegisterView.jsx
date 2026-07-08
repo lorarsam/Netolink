@@ -41,7 +41,7 @@ export function RegisterView({ error, initialBalance, isSubmitting = false, onBa
           <form className="mt-7 grid gap-4" onSubmit={handleSubmit}>
             <TextField id="name" label="Nombre" name="name" onChange={handleChange} placeholder="Tu nombre" type="text" value={form.name} />
             <TextField autoComplete="email" icon="mail" id="email" label="Email" name="email" onChange={handleChange} placeholder="tu@email.cl" type="email" value={form.email} />
-            <TextField actionIcon="eye" autoComplete="new-password" icon="lock" id="password" label="Password" name="password" onChange={handleChange} placeholder="Crea una password" type="password" value={form.password} />
+            <TextField actionIcon="eye" actionLabels={loginContent.passwordToggleLabels} autoComplete="new-password" icon="lock" id="password" label="Password" name="password" onChange={handleChange} placeholder="Crea una password" type="password" value={form.password} />
 
             {error && <p className="rounded-xl bg-blush px-3 py-2 text-xs font-bold text-brand-dark">{error}</p>}
 

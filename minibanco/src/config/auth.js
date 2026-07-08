@@ -8,6 +8,10 @@ export const loginContent = {
   subtitle: 'Sign in to continue to your digital bank.',
   submitLabel: 'Login',
   forgotPasswordLabel: 'Forgot password?',
+  passwordToggleLabels: {
+    hide: 'Ocultar password',
+    show: 'Mostrar password',
+  },
   signUpPrompt: "Don't have an account?",
   signUpLabel: 'Sign up',
   fields: [

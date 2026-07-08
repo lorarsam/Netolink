@@ -19,6 +19,7 @@ export async function registerUser({ email, name, password }) {
     saldo: INITIAL_BALANCE,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
+    lastTransferId: null,
   })
 
   return credential.user

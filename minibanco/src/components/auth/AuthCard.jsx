@@ -14,6 +14,7 @@ export function AuthCard({ content, error, form, isSubmitting = false, onChange,
           <TextField
             key={field.id}
             actionIcon={field.actionIcon}
+            actionLabels={field.id === 'password' ? content.passwordToggleLabels : null}
             autoComplete={field.autoComplete}
             icon={field.icon}
             id={field.id}

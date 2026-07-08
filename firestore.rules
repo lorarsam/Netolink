@@ -1,1 +1,128 @@
-rules_version = '2'; service cloud.firestore { match /databases/{database}/documents { match /{document=**} { allow read, write: if false; } } }
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function validUserProfile() {
+      return request.resource.data.keys().hasOnly(['nombre', 'email', 'saldo', 'createdAt', 'updatedAt', 'lastTransferId'])
+        && request.resource.data.nombre is string
+        && request.resource.data.email is string
+        && request.resource.data.saldo is number
+        && request.resource.data.saldo >= 0;
+    }
+
+    function transferAfter(transferId) {
+      return getAfter(/databases/$(database)/documents/transfers/$(transferId)).data;
+    }
+
+    function transferExistsAfter(transferId) {
+      return existsAfter(/databases/$(database)/documents/transfers/$(transferId));
+    }
+
+    function validSenderBalanceUpdate(uid) {
+      let transferId = request.resource.data.lastTransferId;
+      let transfer = transferAfter(transferId);
+
+      return request.auth.uid == uid
+        && transferExistsAfter(transferId)
+        && transfer.emisorUid == uid
+        && transfer.monto is number
+        && request.resource.data.saldo == resource.data.saldo - transfer.monto;
+    }
+
+    function validReceiverBalanceUpdate(uid) {
+      let transferId = request.resource.data.lastTransferId;
+      let transfer = transferAfter(transferId);
+
+      return transferExistsAfter(transferId)
+        && request.auth.uid == transfer.emisorUid
+        && transfer.receptorUid == uid
+        && transfer.monto is number
+        && request.resource.data.saldo == resource.data.saldo + transfer.monto;
+    }
+
+    function validBalanceUpdate(uid) {
+      return request.resource.data.diff(resource.data).changedKeys().hasOnly(['saldo', 'updatedAt', 'lastTransferId'])
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.lastTransferId is string
+        && (validSenderBalanceUpdate(uid) || validReceiverBalanceUpdate(uid));
+    }
+
+    function validMovement() {
+      return request.resource.data.keys().hasOnly([
+        'tipo', 'contraparteUid', 'contraparteNombre', 'contraparteEmail',
+        'monto', 'descripcion', 'fecha', 'status', 'transferenciaId'
+      ])
+        && request.resource.data.tipo in ['egreso', 'ingreso']
+        && request.resource.data.contraparteUid is string
+        && request.resource.data.contraparteNombre is string
+        && request.resource.data.contraparteEmail is string
+        && request.resource.data.monto is number
+        && request.resource.data.monto > 0
+        && request.resource.data.descripcion is string
+        && request.resource.data.status == 'Completado'
+        && request.resource.data.transferenciaId is string;
+    }
+
+    function validMovementForTransfer(uid) {
+      let transferId = request.resource.data.transferenciaId;
+      let transfer = transferAfter(transferId);
+
+      return transferExistsAfter(transferId)
+        && request.resource.data.monto == transfer.monto
+        && (
+          request.resource.data.tipo == 'egreso'
+            && request.auth.uid == uid
+            && transfer.emisorUid == uid
+            && transfer.receptorUid == request.resource.data.contraparteUid
+          ||
+          request.resource.data.tipo == 'ingreso'
+            && request.auth.uid == transfer.emisorUid
+            && transfer.receptorUid == uid
+            && transfer.emisorUid == request.resource.data.contraparteUid
+        );
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && validUserProfile()
+        && request.resource.data.saldo == 100000;
+      allow update: if signedIn()
+        && validUserProfile()
+        && validBalanceUpdate(uid);
+      allow delete: if false;
+
+      match /movimientos/{movimientoId} {
+        allow read: if signedIn() && request.auth.uid == uid;
+        allow create: if signedIn()
+          && validMovement()
+          && validMovementForTransfer(uid);
+        allow update, delete: if false;
+      }
+    }
+
+    match /transfers/{transferId} {
+      allow read: if signedIn()
+        && (resource.data.emisorUid == request.auth.uid || resource.data.receptorUid == request.auth.uid);
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly([
+          'emisorUid', 'emisorNombre', 'emisorEmail',
+          'receptorUid', 'receptorNombre', 'receptorEmail',
+          'monto', 'descripcion', 'fecha', 'status'
+        ])
+        && request.resource.data.emisorUid == request.auth.uid
+        && request.resource.data.receptorUid is string
+        && request.resource.data.receptorUid != request.auth.uid
+        && request.resource.data.monto is number
+        && request.resource.data.monto > 0
+        && request.resource.data.descripcion is string
+        && request.resource.data.status == 'Completado';
+      allow update, delete: if false;
+    }
+  }
+}
