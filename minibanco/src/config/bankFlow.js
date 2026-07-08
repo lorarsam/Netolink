@@ -16,6 +16,7 @@ export const navItems = [
 export const appSidebar = {
   brand: {
     ariaLabel: 'Netolink Digital Banking',
+    iconSrc: '/icono.svg',
     name: 'Netolink',
   },
   items: navItems,

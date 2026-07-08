@@ -2,6 +2,7 @@ export const loginContent = {
   brand: {
     name: 'Netolink',
     ariaLabel: 'Netolink Digital Banking',
+    iconSrc: '/icono.svg',
   },
   title: 'Welcome Back',
   subtitle: 'Sign in to continue to your digital bank.',

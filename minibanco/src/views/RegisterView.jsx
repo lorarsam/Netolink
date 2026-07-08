@@ -3,6 +3,7 @@ import { BrandLogo } from '../components/brand/BrandLogo'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { TextField } from '../components/forms/TextField'
+import { loginContent } from '../config/auth'
 import { formatCurrency } from '../utils/formatters'
 
 const initialForm = {
@@ -28,7 +29,7 @@ export function RegisterView({ initialBalance, onBackToLogin, onRegister }) {
     <main className="grid min-h-screen place-items-center border-[3px] border-ink bg-brand px-6 py-10 text-ink">
       <section className="w-full max-w-md">
         <div className="mb-7">
-          <BrandLogo ariaLabel="Netolink Digital Banking" compact name="Netolink" />
+          <BrandLogo compact {...loginContent.brand} />
         </div>
 
         <Card className="bg-white">

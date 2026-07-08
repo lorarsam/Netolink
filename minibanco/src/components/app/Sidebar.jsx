@@ -8,7 +8,7 @@ export function Sidebar({ activeItem, brand, items = [], logoutItem, onLogout, o
       <div>
         {brand ? (
           <div className="mb-10 justify-start pl-1">
-            <BrandLogo ariaLabel={brand.ariaLabel} name={brand.name} />
+            <BrandLogo ariaLabel={brand.ariaLabel} iconSrc={brand.iconSrc} name={brand.name} />
             {subtitle ? <p className="ml-10 mt-0.5 text-[11px] font-semibold text-white/85">{subtitle}</p> : null}
           </div>
         ) : null}
