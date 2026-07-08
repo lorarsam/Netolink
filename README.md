@@ -1,5 +1,6 @@
 # Netolink - Mini Banco Digital
 
+# Se encontró una inconsistencia en las instrucciones ya que se solicitan dos usuarios de prueba, pero no permite compartir las KEYS, por lo que el acceso a dichas cuentas seria imposible
 Netolink es una SPA de banca digital construida con React, Vite y Firebase. Permite registrar usuarios, iniciar sesion, consultar saldo en tiempo real, transferir dinero a otros usuarios y revisar el historial de movimientos sincronizado con Cloud Firestore.
 
 Proyecto desarrollado para la evaluacion Mini Banco Digital de Programacion Front End.
