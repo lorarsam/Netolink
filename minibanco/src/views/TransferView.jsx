@@ -7,7 +7,7 @@ import { Card } from '../components/ui/Card'
 import { transferContent } from '../config/bankFlow'
 
 const initialForm = {
-  recipient: 'james.r@example.com',
+  recipient: '',
   amount: '',
   description: '',
 }
