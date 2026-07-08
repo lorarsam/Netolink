@@ -2,7 +2,8 @@ const buttonVariants = {
   primary: 'justify-center bg-brand text-white shadow-soft hover:bg-brand-dark focus-visible:ring-brand/40',
   ghost: 'justify-center bg-transparent text-brand hover:text-brand-dark focus-visible:ring-brand/30',
   iconGhost: 'h-8 w-8 justify-center bg-transparent p-0 text-ink-soft hover:bg-cream-field focus-visible:ring-brand/30',
-  recipient: 'justify-start gap-3 rounded-xl bg-cream-field px-4 py-3 text-left text-sm text-ink shadow-none hover:bg-cream focus-visible:ring-brand/30',
+  recipient: 'w-full justify-start gap-3 rounded-xl bg-cream-field px-4 py-2.5 text-left text-sm text-ink shadow-none hover:bg-cream focus-visible:ring-brand/30',
+  recipientOption: 'w-full justify-start gap-3 rounded-none bg-transparent px-4 py-3 text-left text-sm text-ink shadow-none hover:bg-cream-field focus-visible:ring-brand/30',
   textGhost: 'justify-center bg-transparent px-0 py-0 text-brand hover:text-brand-dark focus-visible:ring-brand/30',
   sidebarPrimary: 'w-full justify-start gap-3 bg-transparent text-white/85 shadow-none hover:bg-white/15 hover:text-white focus-visible:ring-white/30 disabled:cursor-default disabled:opacity-80',
 }

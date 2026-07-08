@@ -92,15 +92,47 @@ export const historyContent = {
 }
 
 export const transferContent = {
+  form: {
+    amountLabel: 'Monto',
+    amountPlaceholder: '0',
+    balanceLabel: 'Saldo disponible',
+    descriptionLabel: 'Descripcion (opcional)',
+    descriptionPlaceholder: 'Motivo de la transferencia',
+    errorMessage: 'Revisa las validaciones antes de confirmar la transferencia.',
+    emptyRecipientsLabel: 'No se encontraron usuarios',
+    noRecipientEmail: 'Ingresa un correo registrado',
+    noRecipientName: 'Sin destinatario seleccionado',
+    pendingLabel: 'Pendiente',
+    recipientLabel: 'Destinatario',
+    recipientPlaceholder: 'Buscar nombre o email',
+    recipientSearchLabel: 'Seleccionar destinatario',
+    selectedLabel: 'Activo',
+    submitLabel: 'Transferir dinero',
+  },
+  header: {
+    cancelLabel: 'Cancelar',
+    subtitle: 'Envia dinero de forma segura a usuarios registrados.',
+    title: 'Transferencias',
+  },
+  modal: {
+    cancelLabel: 'Cancelar',
+    confirmLabel: 'Confirmar',
+    subtitle: 'Revisa los detalles antes de confirmar.',
+    title: 'Confirmar transferencia',
+  },
   recentRecipients: {
     actionLabel: 'Ver todo',
     title: 'Destinatarios recientes',
   },
+  summary: {
+    amountLabel: 'Monto',
+    defaultRecipient: 'Selecciona destinatario',
+    feeLabel: 'Comision',
+    remainingBalanceLabel: 'Saldo restante',
+    sender: 'Cuenta principal',
+    senderLabel: 'Origen',
+    recipientLabel: 'Destinatario',
+    title: 'Resumen de transferencia',
+    totalLabel: 'Total',
+  },
 }
-
-export const transferRules = [
-  { id: 'recipient', label: 'Destinatario existe' },
-  { id: 'amount', label: 'Monto mayor a 0' },
-  { id: 'balance', label: 'Saldo suficiente' },
-  { id: 'self', label: 'No transferirse a si mismo' },
-]
