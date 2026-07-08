@@ -44,10 +44,10 @@ npm install
 Crear el archivo de variables de entorno local:
 
 ```bash
-cp minibanco/.env.example minibanco/.env.local
+cp .env.example .env.local
 ```
 
-Completar `minibanco/.env.local` con la configuracion del proyecto Firebase:
+Completar `.env.local` con la configuracion del proyecto Firebase:
 
 ```env
 VITE_FIREBASE_API_KEY=
@@ -80,7 +80,7 @@ Si los usuarios no existen, se pueden crear desde el formulario de registro de l
 
 ## Configuracion de Firebase
 
-La configuracion de Firebase se carga desde variables de entorno en `minibanco/src/firebase/config.js`. El archivo `.env.local` no debe subirse al repositorio. El archivo `minibanco/.env.example` indica las variables necesarias sin exponer credenciales.
+La configuracion de Firebase se carga desde variables de entorno en `src/firebase/config.js`. El archivo `.env.local` no debe subirse al repositorio. El archivo `.env.example` indica las variables necesarias sin exponer credenciales.
 
 El proyecto usa:
 
@@ -175,22 +175,20 @@ Las suscripciones se crean dentro de `useEffect` y retornan sus funciones `unsub
 ```txt
 .
 +-- README.md
++-- .env.example
 +-- firebase.json
 +-- firestore.rules
 +-- package.json
-`-- minibanco/
-    +-- .env.example
-    +-- package.json
-    +-- vite.config.js
-    `-- src/
-        +-- components/
-        +-- config/
-        +-- firebase/
-        +-- services/
-        +-- utils/
-        +-- views/
-        +-- App.jsx
-        `-- main.jsx
++-- vite.config.js
+`-- src/
+    +-- components/
+    +-- config/
+    +-- firebase/
+    +-- services/
+    +-- utils/
+    +-- views/
+    +-- App.jsx
+    `-- main.jsx
 ```
 
 ## Scripts Disponibles
@@ -230,4 +228,5 @@ Se uso IA como apoyo para revisar requerimientos, ordenar la documentacion y mej
 - El saldo no se maneja solo como estado local: se deriva del documento `users/{uid}` escuchado con `onSnapshot`.
 - Las transferencias usan `runTransaction` para mantener consistencia entre saldo del emisor, saldo del receptor y movimientos.
 - El historial se guarda por usuario para consultar solo los movimientos relevantes y actualizarlos en tiempo real.
+- El modo oscuro persiste en `localStorage` y aplica la clase global `dark` porque Tailwind esta configurado con `darkMode: 'class'`; no se manipulan nodos de negocio ni formularios fuera del estado de React.
 - El archivo `.env.local` queda fuera del repositorio para no exponer configuracion sensible.
