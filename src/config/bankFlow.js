@@ -247,6 +247,10 @@ export const transferContent = {
   },
   recentRecipients: {
     actionLabel: 'Ver todo',
+    nextLabel: 'Siguiente',
+    pageSize: 10,
+    pageStatusLabel: ({ currentPage, pageCount }) => `Pagina ${currentPage} de ${pageCount}`,
+    previousLabel: 'Anterior',
     title: 'Destinatarios recientes',
   },
   summary: {

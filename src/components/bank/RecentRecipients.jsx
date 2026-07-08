@@ -1,9 +1,20 @@
+import { useMemo, useState } from 'react'
 import { Button } from '../ui/Button'
 import { Card } from '../ui/Card'
+import { Pagination } from '../ui/Pagination'
 
 const avatarColors = ['bg-blush text-brand-dark', 'bg-mint text-teal', 'bg-cream text-brand-dark']
 
 export function RecentRecipients({ content, onSelect, recipients }) {
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = Math.max(1, Number(content.pageSize) || recipients.length || 1)
+  const pageCount = Math.max(1, Math.ceil(recipients.length / pageSize))
+  const safeCurrentPage = Math.min(currentPage, pageCount)
+  const pageStart = (safeCurrentPage - 1) * pageSize
+  const visibleRecipients = useMemo(() => recipients.slice(pageStart, pageStart + pageSize), [pageSize, pageStart, recipients])
+  const showPagination = recipients.length > pageSize
+  const statusLabel = content.pageStatusLabel({ currentPage: safeCurrentPage, pageCount })
+
   return (
     <Card interactive variant="flat">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -12,7 +23,7 @@ export function RecentRecipients({ content, onSelect, recipients }) {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        {recipients.map((recipient, index) => (
+        {visibleRecipients.map((recipient, index) => (
           <Button
             className="min-w-0 overflow-hidden px-3 py-3 sm:px-4"
             key={recipient.id}
@@ -30,6 +41,18 @@ export function RecentRecipients({ content, onSelect, recipients }) {
           </Button>
         ))}
       </div>
+
+      {showPagination && (
+        <Pagination
+          currentPage={safeCurrentPage}
+          nextLabel={content.nextLabel}
+          onNext={() => setCurrentPage(Math.min(safeCurrentPage + 1, pageCount))}
+          onPrevious={() => setCurrentPage(Math.max(safeCurrentPage - 1, 1))}
+          pageCount={pageCount}
+          previousLabel={content.previousLabel}
+          statusLabel={statusLabel}
+        />
+      )}
     </Card>
   )
 }
