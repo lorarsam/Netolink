@@ -64,11 +64,11 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(28rem,0.72fr)] xl:items-start">
       <Card interactive className="bg-white p-5 sm:p-6">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h2 className="text-2xl font-black tracking-tight">{transferContent.header.title}</h2>
+          <div className="min-w-0">
+            <h2 className="break-words text-xl font-black tracking-tight sm:text-2xl">{transferContent.header.title}</h2>
             <p className="mt-2 text-sm font-medium text-ink-muted">{transferContent.header.subtitle}</p>
           </div>
-          <Button onClick={onCancel} type="button" variant="ghost">{transferContent.header.cancelLabel}</Button>
+          <Button className="justify-center" onClick={onCancel} type="button" variant="ghost">{transferContent.header.cancelLabel}</Button>
         </div>
 
         <TransferForm account={account} amount={amount} content={transferContent.form} error={error} form={form} onChange={handleChange} onSubmit={handleSubmit} recipient={recipient} summaryContent={transferContent.summary} users={availableRecipients} />

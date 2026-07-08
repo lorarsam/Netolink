@@ -6,7 +6,7 @@ const avatarColors = ['bg-blush text-brand-dark', 'bg-mint text-teal', 'bg-cream
 export function RecentRecipients({ content, onSelect, recipients }) {
   return (
     <Card interactive variant="flat">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h3 className="text-sm font-black">{content.title}</h3>
         <Button className="text-xs" type="button" variant="textGhost">{content.actionLabel}</Button>
       </div>
@@ -14,7 +14,7 @@ export function RecentRecipients({ content, onSelect, recipients }) {
       <div className="grid gap-3 sm:grid-cols-2">
         {recipients.map((recipient, index) => (
           <Button
-            className="min-w-0 overflow-hidden px-4 py-3"
+            className="min-w-0 overflow-hidden px-3 py-3 sm:px-4"
             key={recipient.id}
             onClick={() => onSelect(recipient)}
             type="button"

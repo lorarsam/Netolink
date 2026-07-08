@@ -66,13 +66,13 @@ export function InputField({
   return (
     <div className={`relative grid content-start ${styles.label} ${className}`}>
       {(label || rightLabel) && (
-        <span className="flex items-center justify-between gap-3">
+        <span className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           {label && <label htmlFor={inputProps.id}>{label}</label>}
-          {rightLabel && <span className="normal-case tracking-normal">{rightLabel}</span>}
+          {rightLabel && <span className="text-right normal-case tracking-normal">{rightLabel}</span>}
         </span>
       )}
 
-      <span className={`flex items-center gap-3 ring-brand/35 transition focus-within:ring-2 ${styles.control} ${controlClassName}`}>
+      <span className={`flex min-w-0 items-center gap-3 ring-brand/35 transition focus-within:ring-2 ${styles.control} ${controlClassName}`}>
         {iconLeft && <Icon name={iconLeft} className={`${styles.icon} shrink-0`} />}
         {prefix && <span className="shrink-0 text-2xl font-black text-ink-muted">{prefix}</span>}
         <input
@@ -81,7 +81,7 @@ export function InputField({
           onChange={handleChange}
         />
         {suffix && <span className="shrink-0 text-sm font-bold text-ink-muted">{suffix}</span>}
-        {badge && <span className="shrink-0 rounded-full bg-white px-3 py-1 text-[11px] font-black normal-case tracking-normal text-teal">{badge}</span>}
+        {badge && <span className="hidden shrink-0 rounded-full bg-white px-3 py-1 text-[11px] font-black normal-case tracking-normal text-teal sm:inline-flex">{badge}</span>}
         {iconRight && <Icon name={iconRight} className={`${styles.icon} shrink-0`} />}
         {action}
       </span>

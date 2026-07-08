@@ -8,7 +8,7 @@ export function AppShell({ activeScreen, children, onLogout, onNavigate, title, 
       <Sidebar activeItem={activeScreen} onLogout={onLogout} onNavigate={onNavigate} {...appSidebar} />
       <main className="min-w-0 flex-1">
         <Navbar title={title} user={user} {...appNavbar} />
-        <div className="px-5 py-6 lg:px-8 lg:py-8">{children}</div>
+        <div className="px-4 pb-28 pt-5 sm:px-5 sm:pt-6 lg:px-8 lg:py-8">{children}</div>
       </main>
     </div>
   )

@@ -19,7 +19,7 @@ export function MetricCard({ change, changeTone = 'neutral', description, icon, 
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.18em] text-ink-muted">{label}</p>
-          <p className="mt-3 text-3xl font-black tracking-tight text-ink">{value}</p>
+          <p className="mt-3 break-words text-2xl font-black tracking-tight text-ink sm:text-3xl">{value}</p>
         </div>
         {icon ? (
           <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-2xl ${toneClassNames[tone]}`}>

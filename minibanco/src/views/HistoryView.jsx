@@ -20,11 +20,11 @@ export function HistoryView({ onDashboard, transactions }) {
     <div className="grid gap-6">
       <Card>
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-          <div>
-            <h2 className="text-4xl font-black">{historyContent.title}</h2>
+          <div className="min-w-0">
+            <h2 className="break-words text-3xl font-black sm:text-4xl">{historyContent.title}</h2>
             <p className="mt-2 max-w-xl text-ink-muted">{historyContent.subtitle}</p>
           </div>
-          <Button onClick={onDashboard} type="button" variant="ghost">{historyContent.backLabel}</Button>
+          <Button className="justify-center" onClick={onDashboard} type="button" variant="ghost">{historyContent.backLabel}</Button>
         </div>
 
         <div className="mt-7 grid gap-3 sm:grid-cols-3">
@@ -34,7 +34,7 @@ export function HistoryView({ onDashboard, transactions }) {
         </div>
       </Card>
 
-      <TransactionFilters filters={historyContent.filters} onChange={handleFilterChange} value={filters} />
+      <TransactionFilters filters={historyContent.filters} onChange={handleFilterChange} toggleLabel={historyContent.filterToggleLabel} value={filters} />
 
       <MovementList emptyMessage={historyContent.emptyMessage} transactions={filteredTransactions} typeLabels={transactionContent.typeLabels} typePresentation={transactionContent.typePresentation} />
     </div>
@@ -70,7 +70,7 @@ function Stat({ label, tone = 'text-ink', value }) {
   return (
     <div className="rounded-2xl bg-white p-4 shadow-soft">
       <p className="text-xs font-black uppercase text-ink-muted">{label}</p>
-      <p className={`mt-2 text-2xl font-black ${tone}`}>{value}</p>
+      <p className={`mt-2 break-words text-xl font-black sm:text-2xl ${tone}`}>{value}</p>
     </div>
   )
 }

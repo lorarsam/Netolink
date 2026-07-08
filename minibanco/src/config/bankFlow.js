@@ -116,6 +116,7 @@ export const transactionContent = {
 export const historyContent = {
   backLabel: 'Volver al Dashboard',
   emptyMessage: 'No hay movimientos para los filtros seleccionados.',
+  filterToggleLabel: 'Filtros',
   filters: [
     {
       defaultValue: 'all',

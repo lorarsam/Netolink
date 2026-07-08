@@ -28,22 +28,22 @@ function MovementItem({ transaction, typeLabels, typePresentation }) {
   const typeLabel = typeLabels[transaction.type] || transaction.type
 
   return (
-    <div className="grid gap-4 rounded-3xl border border-line/80 bg-white p-4 shadow-soft transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card sm:grid-cols-[auto_1fr_auto] sm:items-center">
-      <div className={`grid h-11 w-11 place-items-center rounded-2xl ${type.iconClassName}`}>
+    <div className="grid gap-3 rounded-2xl border border-line/80 bg-white p-3 shadow-soft transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-4 sm:rounded-3xl sm:p-4">
+      <div className={`grid h-10 w-10 place-items-center rounded-2xl sm:h-11 sm:w-11 ${type.iconClassName}`}>
         <Icon name={type.icon} className="h-5 w-5" />
       </div>
-      <div className="grid gap-1 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-4">
-        <div>
-          <p className="font-black text-ink">{transaction.counterparty}</p>
+      <div className="grid min-w-0 gap-2 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-4">
+        <div className="min-w-0">
+          <p className="truncate font-black text-ink">{transaction.counterparty}</p>
           <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-ink-muted">
-            <p className="text-xs text-ink-muted">{transaction.description}</p>
-            <span aria-hidden="true">|</span>
+            <p className="min-w-0 break-words text-xs text-ink-muted">{transaction.description}</p>
+            <span className="hidden sm:inline" aria-hidden="true">|</span>
             <p>{formatDateTime(transaction.date)}</p>
           </div>
         </div>
         <StatusBadge variant={type.status}>{typeLabel}</StatusBadge>
       </div>
-      <p className={`text-left text-lg font-black sm:text-right ${type.amountClassName}`}>
+      <p className={`break-words text-left text-base font-black sm:text-right sm:text-lg ${type.amountClassName}`}>
         {type.sign}{formatCurrency(transaction.amount)}
       </p>
     </div>

@@ -42,12 +42,12 @@ export function DashboardView({ account, onHistory, onTransfer, transactions }) 
       </div>
 
       <Card interactive>
-        <div className="mb-5 flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-black">{dashboardContent.activity.title}</h2>
+        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h2 className="text-lg font-black sm:text-xl">{dashboardContent.activity.title}</h2>
             <p className="text-sm text-ink-muted">{dashboardContent.activity.description}</p>
           </div>
-          <Button onClick={onHistory} type="button" variant="ghost">{dashboardContent.activity.actionLabel}</Button>
+          <Button className="justify-center" onClick={onHistory} type="button" variant="ghost">{dashboardContent.activity.actionLabel}</Button>
         </div>
         <MovementList emptyMessage={transactionContent.emptyMessage} limit={4} transactions={transactions} typeLabels={transactionContent.typeLabels} typePresentation={transactionContent.typePresentation} />
       </Card>

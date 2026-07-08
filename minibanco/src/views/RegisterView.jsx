@@ -26,7 +26,7 @@ export function RegisterView({ initialBalance, onBackToLogin, onRegister }) {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center border-[3px] border-ink bg-brand px-6 py-10 text-ink">
+    <main className="grid min-h-screen place-items-center border-[3px] border-ink bg-brand px-4 py-8 text-ink sm:px-6 sm:py-10">
       <section className="w-full max-w-md">
         <div className="mb-7">
           <BrandLogo compact {...loginContent.brand} />
@@ -34,7 +34,7 @@ export function RegisterView({ initialBalance, onBackToLogin, onRegister }) {
 
         <Card className="bg-white">
           <header className="text-center">
-            <h1 className="text-3xl font-black tracking-tight">Crear cuenta</h1>
+            <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Crear cuenta</h1>
             <p className="mt-2 text-sm text-ink-muted">Alta en Firebase Auth, documento Firestore y saldo inicial.</p>
           </header>
 
