@@ -13,11 +13,13 @@ import {
   FiLock,
   FiLogOut,
   FiMail,
+  FiMoon,
   FiSearch,
   FiSend,
   FiSettings,
   FiShield,
   FiShoppingBag,
+  FiSun,
 } from 'react-icons/fi'
 
 const icons = {
@@ -34,11 +36,13 @@ const icons = {
   lock: FiLock,
   logout: FiLogOut,
   mail: FiMail,
+  moon: FiMoon,
   receipt: FiFileText,
   search: FiSearch,
   send: FiSend,
   settings: FiSettings,
   shield: FiShield,
+  sun: FiSun,
   utensils: FiCoffee,
 }
 

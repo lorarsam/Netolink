@@ -18,9 +18,18 @@ const titles = {
   [screens.history]: 'Historial',
 }
 
+const THEME_STORAGE_KEY = 'minibanco-theme'
+
+function getInitialTheme() {
+  if (typeof window === 'undefined') return 'light'
+
+  return window.localStorage.getItem(THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light'
+}
+
 export default function App() {
   const [authUser, setAuthUser] = useState(null)
   const [screen, setScreen] = useState(screens.login)
+  const [theme, setTheme] = useState(getInitialTheme)
   const [account, setAccount] = useState(null)
   const [user, setUser] = useState(null)
   const [users, setUsers] = useState([])
@@ -33,6 +42,15 @@ export default function App() {
   const [dataError, setDataError] = useState('')
 
   const orderedTransactions = useMemo(() => sortByNewest(transactions), [transactions])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme)
+  }, [theme])
+
+  function handleToggleTheme() {
+    setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'))
+  }
 
   function handleDataError(error) {
     setDataError(error.message || 'No se pudieron sincronizar los datos.')
@@ -168,7 +186,15 @@ export default function App() {
   }
 
   return (
-    <AppShell activeScreen={screen} onLogout={handleLogout} onNavigate={setScreen} title={titles[screen] || 'Netolink'} user={user}>
+    <AppShell
+      activeScreen={screen}
+      onLogout={handleLogout}
+      onNavigate={setScreen}
+      onToggleTheme={handleToggleTheme}
+      theme={theme}
+      title={titles[screen] || 'Netolink'}
+      user={user}
+    >
       {dataError && <div className="mb-5 rounded-2xl bg-blush px-4 py-3 text-sm font-bold text-brand-dark">{dataError}</div>}
 
       {screen === screens.dashboard && (

@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 
-export function Navbar({ actions = [], logoutItem, onLogout, searchPlaceholder, title, user }) {
+export function Navbar({ actions = [], logoutItem, onLogout, onToggleTheme, searchPlaceholder, theme = 'light', title, user }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const userInitial = user?.name?.slice(0, 1) || ''
   const profileLabel = user?.name || user?.email || ''
+  const isDarkTheme = theme === 'dark'
 
   function handleLogout() {
     setIsProfileOpen(false)
@@ -28,12 +29,21 @@ export function Navbar({ actions = [], logoutItem, onLogout, searchPlaceholder, 
             <Icon name={action.icon} className="h-4 w-4" />
           </Button>
         ))}
+        <Button
+          type="button"
+          aria-label={isDarkTheme ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+          onClick={onToggleTheme}
+          title={isDarkTheme ? 'Modo claro' : 'Modo oscuro'}
+          variant="iconGhost"
+        >
+          <Icon name={isDarkTheme ? 'sun' : 'moon'} className="h-4 w-4" />
+        </Button>
         <div className="relative">
           <button
             aria-expanded={isProfileOpen}
             aria-haspopup="menu"
             aria-label={profileLabel}
-            className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-brand text-sm font-black text-cream-card transition hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/30"
+            className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-brand text-sm font-black text-onBrand transition hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/30"
             onClick={() => setIsProfileOpen((current) => !current)}
             title={profileLabel}
             type="button"

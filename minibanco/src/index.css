@@ -3,6 +3,104 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: light;
+    --color-brand: 207 85 73;
+    --color-brand-dark: 185 66 52;
+    --color-brand-soft: 243 215 210;
+    --color-cream: 247 234 216;
+    --color-cream-soft: 251 244 234;
+    --color-cream-card: 255 253 249;
+    --color-cream-field: 245 234 215;
+    --color-ink: 45 37 36;
+    --color-ink-soft: 81 70 68;
+    --color-ink-muted: 125 112 107;
+    --color-action: 207 85 73;
+    --color-action-active: 255 253 249;
+    --color-action-active-text: 185 66 52;
+    --color-action-hover: 255 253 249;
+    --color-action-text: 81 70 68;
+    --color-button-focus: 185 66 52;
+    --color-button-ghost-text: 185 66 52;
+    --color-button-ghost-hover: 243 215 210;
+    --color-button-primary: 185 66 52;
+    --color-button-primary-hover: 207 85 73;
+    --color-button-primary-text: 255 253 249;
+    --color-button-secondary: 255 253 249;
+    --color-button-secondary-border: 207 85 73;
+    --color-button-secondary-hover: 243 215 210;
+    --color-button-secondary-text: 185 66 52;
+    --color-nav-action-active: 255 253 249;
+    --color-nav-action-active-text: 185 66 52;
+    --color-nav-action-hover: 255 253 249;
+    --color-nav-action-hover-text: 255 253 249;
+    --color-nav-action-text: 255 253 249;
+    --color-on-brand: 255 253 249;
+    --color-surface: 255 253 249;
+    --color-surface-active: 255 253 249;
+    --color-surface-field: 245 234 215;
+    --color-surface-hover: 245 234 215;
+    --color-surface-soft: 251 244 234;
+    --color-text: 45 37 36;
+    --color-text-muted: 125 112 107;
+    --color-text-soft: 81 70 68;
+    --color-line: 234 216 200;
+    --color-teal: 15 139 141;
+    --color-mint: 223 246 236;
+    --color-blush: 253 235 234;
+    --shadow-card: 0 18px 45px rgb(111 72 45 / 0.12);
+    --shadow-soft: 0 10px 30px rgb(111 72 45 / 0.10);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --color-brand: 139 59 50;
+    --color-brand-dark: 166 73 60;
+    --color-brand-soft: 82 55 50;
+    --color-cream: 44 32 29;
+    --color-cream-soft: 54 39 36;
+    --color-cream-card: 64 46 42;
+    --color-cream-field: 61 43 39;
+    --color-ink: 250 242 237;
+    --color-ink-soft: 230 213 205;
+    --color-ink-muted: 184 155 146;
+    --color-action: 166 73 60;
+    --color-action-active: 64 46 42;
+    --color-action-active-text: 255 246 241;
+    --color-action-hover: 255 246 241;
+    --color-action-text: 230 213 205;
+    --color-button-focus: 255 246 241;
+    --color-button-ghost-text: 255 246 241;
+    --color-button-ghost-hover: 255 246 241;
+    --color-button-primary: 255 238 233;
+    --color-button-primary-hover: 255 246 241;
+    --color-button-primary-text: 166 73 60;
+    --color-button-secondary: 255 246 241;
+    --color-button-secondary-border: 255 246 241;
+    --color-button-secondary-hover: 255 246 241;
+    --color-button-secondary-text: 255 246 241;
+    --color-nav-action-active: 64 46 42;
+    --color-nav-action-active-text: 255 246 241;
+    --color-nav-action-hover: 255 246 241;
+    --color-nav-action-hover-text: 255 246 241;
+    --color-nav-action-text: 255 246 241;
+    --color-on-brand: 255 246 241;
+    --color-surface: 64 46 42;
+    --color-surface-active: 64 46 42;
+    --color-surface-field: 61 43 39;
+    --color-surface-hover: 255 246 241;
+    --color-surface-soft: 54 39 36;
+    --color-text: 250 242 237;
+    --color-text-muted: 184 155 146;
+    --color-text-soft: 230 213 205;
+    --color-line: 92 68 62;
+    --color-teal: 15 190 186;
+    --color-mint: 220 250 241;
+    --color-blush: 92 53 49;
+    --shadow-card: 0 18px 45px rgb(18 12 10 / 0.24);
+    --shadow-soft: 0 10px 30px rgb(18 12 10 / 0.18);
+  }
+
   * {
     box-sizing: border-box;
   }

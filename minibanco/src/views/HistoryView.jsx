@@ -76,7 +76,7 @@ function isOutgoingMovement(type) {
 
 function Stat({ label, tone = 'text-ink', value }) {
   return (
-    <div className="rounded-2xl bg-cream-card p-4 shadow-soft">
+    <div className="rounded-2xl border border-line bg-cream-card p-4">
       <p className="text-xs font-black uppercase text-ink-muted">{label}</p>
       <p className={`mt-2 break-words text-xl font-black sm:text-2xl ${tone}`}>{value}</p>
     </div>
