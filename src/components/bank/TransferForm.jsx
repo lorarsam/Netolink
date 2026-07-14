@@ -7,7 +7,7 @@ import { TransferSummary } from './TransferSummary'
 export function TransferForm({ account, amount, content, error, form, isSubmitting = false, onChange, onSubmit, recipient, summaryContent, users }) {
   return (
     <form className="grid gap-4" onSubmit={onSubmit}>
-      {error && <div className="rounded-2xl bg-blush px-4 py-2.5 text-sm font-bold text-brand-dark">{error}</div>}
+      {error && <div className="rounded-2xl bg-blush px-4 py-2.5 text-sm font-bold text-brand-dark" role="alert">{error}</div>}
 
       <div className="grid items-start gap-4 xl:grid-cols-2">
         <RecipientCombobox content={content} name="recipient" onChange={onChange} recipient={recipient} users={users} value={form.recipient} />
@@ -26,7 +26,7 @@ export function TransferForm({ account, amount, content, error, form, isSubmitti
             rightLabel={`${content.balanceLabel}: ${formatCurrency(account.balance)}`}
             type="text"
             value={form.amount}
-            valueType="number"
+            valueType="decimal"
             variant="bankAmount"
           />
 
@@ -46,7 +46,7 @@ export function TransferForm({ account, amount, content, error, form, isSubmitti
       </div>
 
       <TransferSummary amount={amount} content={summaryContent} recipient={recipient} />
-      <Button className="w-full py-3.5" disabled={isSubmitting} type="submit">{isSubmitting ? 'Procesando...' : content.submitLabel}</Button>
+      <Button className="w-full py-3.5" disabled={isSubmitting} type="submit">{isSubmitting ? content.submittingLabel : content.submitLabel}</Button>
     </form>
   )
 }

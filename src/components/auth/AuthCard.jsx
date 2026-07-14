@@ -28,10 +28,10 @@ export function AuthCard({ content, error, form, isSubmitting = false, onChange,
           />
         ))}
 
-        {error && <p className="rounded-xl bg-blush px-3 py-2 text-[10px] font-bold text-brand-dark">{error}</p>}
+        {error && <p className="rounded-xl bg-blush px-3 py-2 text-[10px] font-bold text-brand-dark" role="alert">{error}</p>}
 
         <Button className="mt-2 w-full py-2.5 text-[11px]" disabled={isSubmitting} type="submit">
-          {isSubmitting ? 'Validando...' : content.submitLabel}
+          {isSubmitting ? content.submittingLabel : content.submitLabel}
         </Button>
       </form>
 

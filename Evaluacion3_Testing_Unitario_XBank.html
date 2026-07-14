@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación 2: Testing Unitario sobre XBank — TI3V31</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --primary: #3fb950;
+    --accent: #58a6ff;
+    --ok: #3fb950;
+    --warn: #d29922;
+    --danger: #f85149;
+    --code-bg: #0b0f14;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.65;
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 48px 28px 80px; }
+
+  header { border-bottom: 2px solid var(--primary); padding-bottom: 24px; margin-bottom: 32px; }
+  .kicker { color: var(--muted); font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; }
+  h1 { font-size: 2.1rem; color: var(--primary); margin: 6px 0 4px; line-height: 1.2; }
+  .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin: 24px 0 8px;
+  }
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .meta-card .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+  .meta-card .value { font-size: 0.95rem; font-weight: 600; margin-top: 2px; }
+
+  h2 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin: 44px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { color: var(--accent); font-size: 1.05rem; margin: 24px 0 10px; }
+  p { margin-bottom: 12px; }
+  strong { color: #fff; }
+
+  ul { margin: 0 0 14px 22px; }
+  li { margin-bottom: 7px; }
+
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.87em;
+    color: #79c0ff;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0 16px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.88rem;
+    color: #a5d6ff;
+    line-height: 1.5;
+  }
+
+  .rf {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+  .rf h4 { color: var(--primary); font-size: 1rem; margin-bottom: 6px; }
+  .rf p { margin: 0 0 6px; color: var(--text); }
+  .rf p:last-child { margin-bottom: 0; }
+  .rf ul { margin-top: 6px; margin-bottom: 0; }
+
+  .bonus { border-left-color: var(--accent); }
+  .bonus h4 { color: var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.93rem; }
+  th {
+    background: var(--surface2);
+    color: var(--primary);
+    text-align: left;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+  }
+  td { padding: 10px 14px; border: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--surface); }
+  .pct { text-align: center; font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border: 1px solid;
+  }
+  .callout.warn { background: rgba(210,153,34,0.08); border-color: var(--warn); }
+  .callout.warn strong { color: var(--warn); }
+  .callout.danger { background: rgba(248,81,73,0.08); border-color: var(--danger); }
+  .callout.danger strong { color: var(--danger); }
+  .callout.info { background: rgba(88,166,255,0.08); border-color: var(--accent); }
+  .callout.info strong { color: var(--accent); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  @media print {
+    :root {
+      --bg: #ffffff; --surface: #f6f8fa; --surface2: #eaeef2;
+      --border: #d0d7de; --text: #1f2328; --muted: #57606a;
+      --primary: #1a7f37; --accent: #0969da; --code-bg: #f6f8fa;
+    }
+    body { background: #fff; }
+    strong { color: #000; }
+    code { color: #0550ae; }
+    pre { color: #0550ae; }
+    .container { padding: 0; max-width: 100%; }
+    h2 { page-break-after: avoid; }
+    .rf, .callout, table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="kicker">TI3V31 · Programación Front End</div>
+  <h1>Evaluación 2: Testing Unitario sobre XBank</h1>
+  <div class="subtitle">Vitest + React Testing Library · Sobre tu proyecto de la Evaluación 1</div>
+  <div class="meta">
+    <div class="meta-card"><div class="label">Modalidad</div><div class="value">Individual</div></div>
+    <div class="meta-card"><div class="label">Plazo</div><div class="value">1 semana desde la publicación</div></div>
+    <div class="meta-card"><div class="label">Entrega</div><div class="value">Mismo repositorio de la Eval. 1</div></div>
+    <div class="meta-card"><div class="label">Ponderación</div><div class="value">Según programa del curso</div></div>
+  </div>
+</header>
+
+<h2>1. Contexto</h2>
+<p>La fintech quedó contenta con tu prototipo de banca digital... hasta que un usuario transfirió <strong>−$50.000</strong> y su saldo subió. El código "funcionaba" cuando lo probaste a mano, pero nadie lo estaba probando de verdad. Ahora el equipo exige lo que exige cualquier equipo serio: <strong>una suite de tests unitarios</strong> que garantice que la lógica crítica del banco no se rompe con cada cambio.</p>
+<p>En esta evaluación vas a tomar <strong>tu propio proyecto XBank de la Evaluación 1</strong> y le vas a agregar tests unitarios con <strong>Vitest</strong> y <strong>React Testing Library</strong>. Nada de proyectos nuevos: se testea lo que ya construiste. Y sí, esto probablemente te obligue a refactorizar: el código difícil de testear casi siempre es código mal estructurado. Eso también es parte del aprendizaje.</p>
+
+<div class="callout info">
+  <p><strong>Importante:</strong> los tests unitarios <strong>no tocan Firebase real</strong>. Nada de conectarse a Firestore ni crear usuarios de verdad en los tests. Todo lo que sea Firebase se reemplaza con mocks (<code>vi.mock</code>, <code>vi.fn</code>). Un test que depende de internet o de un servicio externo no es un test unitario.</p>
+</div>
+
+<h2>2. Objetivos de aprendizaje</h2>
+<ul>
+  <li>Escribir tests unitarios con <strong>Vitest</strong> siguiendo el patrón <strong>AAA</strong> (Arrange, Act, Assert).</li>
+  <li>Testear componentes React con <strong>React Testing Library</strong> desde la perspectiva del usuario: qué ve y qué hace, no cómo está implementado por dentro.</li>
+  <li>Simular eventos de usuario (escribir, hacer clic, enviar formularios) con <code>userEvent</code>.</li>
+  <li>Aislar la lógica de Firebase mediante <strong>mocks</strong> (<code>vi.mock</code>, <code>vi.fn</code>) para testear sin depender de servicios externos.</li>
+  <li>Refactorizar código para hacerlo testeable: extraer lógica pura, separar responsabilidades.</li>
+  <li>Interpretar un reporte de cobertura y entender qué mide (y qué no mide).</li>
+</ul>
+
+<h2>3. Descripción del trabajo</h2>
+<p>Debes agregar una suite de tests a tu XBank cubriendo tres niveles: <strong>lógica pura</strong>, <strong>componentes</strong> y <strong>servicios mockeados</strong>.</p>
+
+<h3>3.1 Requisitos (obligatorios)</h3>
+
+<div class="rf">
+  <h4>RT1 · Setup del entorno de testing</h4>
+  <p>Configurar Vitest + React Testing Library + jsdom en el proyecto existente. La suite completa debe correr con <code>npm test</code> y el reporte de cobertura con <code>npm run coverage</code>. Ambos scripts deben quedar en el <code>package.json</code>.</p>
+</div>
+
+<div class="rf">
+  <h4>RT2 · Tests de lógica pura: validaciones de transferencia</h4>
+  <p>Extrae las validaciones de transferencia a funciones puras (ej. <code>src/utils/validaciones.js</code>) y testéalas de forma exhaustiva. Casos mínimos:</p>
+  <ul>
+    <li>Monto negativo, cero, no numérico y con decimales inválidos → rechazado.</li>
+    <li>Monto mayor al saldo disponible → rechazado.</li>
+    <li>Transferencia a uno mismo → rechazada.</li>
+    <li>Destinatario vacío o con formato de email inválido → rechazado.</li>
+    <li>Caso feliz: monto válido con saldo suficiente → aceptado.</li>
+  </ul>
+  <p>Si tus validaciones hoy viven mezcladas dentro del componente, este es el momento de refactorizar. El componente llama a la función; la función se testea sola.</p>
+</div>
+
+<div class="rf">
+  <h4>RT3 · Tests de componentes: formulario de transferencia</h4>
+  <p>Con React Testing Library y <code>userEvent</code>, testea el comportamiento del formulario de transferencia:</p>
+  <ul>
+    <li>Renderiza los campos y el botón de enviar.</li>
+    <li>Al ingresar un monto inválido y enviar, se muestra el mensaje de error correspondiente y <strong>no</strong> se llama al servicio de transferencia.</li>
+    <li>Al enviar datos válidos, se llama al servicio (mockeado) exactamente una vez y con los argumentos correctos.</li>
+    <li>Mientras la transferencia está "en curso", el botón queda deshabilitado (no hay doble submit).</li>
+  </ul>
+</div>
+
+<div class="rf">
+  <h4>RT4 · Tests de componentes: login e historial</h4>
+  <ul>
+    <li><strong>Login:</strong> con campos vacíos no se llama al servicio de autenticación; si el servicio mockeado rechaza (credenciales inválidas), se muestra un mensaje de error al usuario.</li>
+    <li><strong>Historial:</strong> dado un arreglo de movimientos (datos de prueba, sin Firestore), el componente los renderiza ordenados del más reciente al más antiguo, distingue envíos de recepciones, y muestra un estado vacío cuando no hay movimientos.</li>
+  </ul>
+</div>
+
+<div class="rf">
+  <h4>RT5 · Mock de la capa de servicios</h4>
+  <p>Los módulos de <code>src/services/</code> (o donde tengas tu lógica de Firebase) se mockean con <code>vi.mock</code>. Debes demostrar al menos: un mock que resuelve con éxito, un mock que rechaza con error, y verificación de llamadas con <code>toHaveBeenCalledWith</code>. Ningún archivo de test debe importar la configuración real de Firebase.</p>
+</div>
+
+<div class="rf">
+  <h4>RT6 · Cobertura mínima</h4>
+  <p>La suite debe alcanzar al menos <strong>70% de cobertura de líneas</strong> en <code>src/utils/</code> y en los componentes testeados (formulario de transferencia, login, historial). No se exige cubrir el 100% del proyecto: se exige cubrir bien lo crítico. En el README debes incluir una captura o resumen del reporte de cobertura.</p>
+</div>
+
+<h3>3.2 Opcionales (bonificación, máx. +0,5 en la nota)</h3>
+<div class="rf bonus">
+  <h4>Bonus</h4>
+  <ul style="margin-top:8px">
+    <li>Test del hook de suscripción: verificar que al desmontar el componente se llama la función <code>unsubscribe</code> (mockeada). Este es el test más interesante de toda la evaluación.</li>
+    <li>GitHub Actions: workflow que corre <code>npm test</code> en cada push. El badge verde en el README vale oro.</li>
+    <li>Tests parametrizados con <code>it.each</code> para la batería de validaciones.</li>
+  </ul>
+</div>
+
+<h2>4. Requisitos técnicos: aquí se juega la nota</h2>
+
+<h3>4.1 Buenas prácticas de testing</h3>
+<ul>
+  <li>Estructura <strong>AAA</strong> visible en cada test: preparar, ejecutar, verificar. Un test que hace las tres cosas revueltas es ilegible.</li>
+  <li>Nombres descriptivos que digan comportamiento: <code>it('rechaza transferencias con monto negativo')</code>, no <code>it('test 3')</code>.</li>
+  <li><strong>Un comportamiento por test.</strong> Si un test tiene 15 asserts sobre cosas distintas, son varios tests disfrazados de uno.</li>
+  <li>Tests independientes: cada test debe poder correr solo y en cualquier orden. Usa <code>beforeEach</code> para resetear mocks (<code>vi.clearAllMocks()</code>), no dependas del estado que dejó el test anterior.</li>
+  <li>Queries de RTL por accesibilidad primero: <code>getByRole</code>, <code>getByLabelText</code>, <code>getByText</code>. El <code>getByTestId</code> es el último recurso, no el primero.</li>
+  <li>Para código asíncrono usa <code>findBy*</code> / <code>waitFor</code>. Nada de <code>setTimeout</code> a mano dentro de un test.</li>
+</ul>
+
+<h3>4.2 Lo que NO se acepta</h3>
+<ul>
+  <li>Tests que se conectan a Firebase real (aunque sea un proyecto de prueba).</li>
+  <li>Tests triviales para inflar cobertura: <code>expect(true).toBe(true)</code>, testear que un título renderiza un título, o snapshots gigantes sin criterio.</li>
+  <li>Tests que dependen de detalles internos de implementación (leer el estado interno del componente en vez de su comportamiento visible).</li>
+  <li>Tests comentados o con <code>it.skip</code> para "que pase la suite". Si un test falla, se arregla el test o se arregla el código.</li>
+</ul>
+
+<h3>4.3 Stack obligatorio</h3>
+<p><strong>Vitest</strong> como runner (nativo de Vite, no Jest) · <strong>@testing-library/react</strong> + <strong>@testing-library/user-event</strong> · <strong>jsdom</strong> como entorno · <strong>@vitest/coverage-v8</strong> para el reporte. Los mocks se hacen con las herramientas de Vitest (<code>vi.mock</code>, <code>vi.fn</code>, <code>vi.spyOn</code>); no se permiten emuladores de Firebase para esta evaluación.</p>
+
+<h3>4.4 Estructura sugerida</h3>
+<pre>src/
+├── utils/
+│   ├── validaciones.js
+│   └── validaciones.test.js
+├── components/
+│   ├── TransferForm.jsx
+│   ├── TransferForm.test.jsx
+│   ├── Login.jsx
+│   ├── Login.test.jsx
+│   ├── Historial.jsx
+│   └── Historial.test.jsx
+└── services/
+    └── transferencias.js      ← se mockea, no se testea contra Firebase</pre>
+
+<h2>5. Rúbrica de evaluación</h2>
+<table>
+  <thead>
+    <tr><th>Criterio</th><th>Descripción</th><th>Puntaje</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Tests de lógica pura</strong></td>
+      <td>RT2: validaciones extraídas y testeadas de forma exhaustiva, incluyendo casos borde y caso feliz.</td>
+      <td class="pct">20%</td>
+    </tr>
+    <tr>
+      <td><strong>Tests de componentes</strong></td>
+      <td>RT3 y RT4: interacción simulada con <code>userEvent</code>, verificación de mensajes de error, doble submit y renderizado condicional.</td>
+      <td class="pct">25%</td>
+    </tr>
+    <tr>
+      <td><strong>Mocking</strong></td>
+      <td>RT5: capa de servicios correctamente aislada con <code>vi.mock</code>, casos de éxito y de error, verificación de llamadas. Cero conexiones a Firebase real.</td>
+      <td class="pct">20%</td>
+    </tr>
+    <tr>
+      <td><strong>Calidad de los tests</strong></td>
+      <td>AAA, nombres descriptivos, independencia entre tests, queries accesibles, manejo correcto de asincronía. Cobertura mínima cumplida sin tests basura.</td>
+      <td class="pct">20%</td>
+    </tr>
+    <tr>
+      <td><strong>Defensa</strong></td>
+      <td>Explicas tus tests y decisiones. Preguntas tipo: ¿por qué mockeas el servicio en vez de usar Firebase real? ¿qué diferencia hay entre <code>getBy</code> y <code>findBy</code>? ¿qué garantiza (y qué no garantiza) tu 70% de cobertura? ¿qué tuviste que refactorizar para poder testear?</td>
+      <td class="pct">15%</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout danger">
+  <p><strong>Descuentos:</strong> la suite no corre con <code>npm test</code> siguiendo el README (−2,0 puntos en la nota final) · tests que se conectan a Firebase real (−1,0) · tests triviales o de relleno para inflar cobertura (−0,5) · tests dependientes entre sí o con <code>it.skip</code> para ocultar fallas (−0,5).</p>
+</div>
+
+<h2>6. Uso de IA</h2>
+<p>Mismas reglas de siempre, con una advertencia extra: la IA es especialmente buena generando tests que <em>parecen</em> buenos pero testean puras trivialidades. Tu criterio es el filtro.</p>
+<ul>
+  <li>Todo test que entregas lo debes poder explicar: qué comportamiento verifica y por qué importa.</li>
+  <li>Si la IA te genera 40 tests, tu pega es decidir cuáles aportan y cuáles son ruido. Cantidad no es calidad.</li>
+  <li>En el README, en la sección de uso de IA, agrega qué le pediste para los tests y al menos un ejemplo de un test generado que tuviste que corregir o descartar (y por qué).</li>
+</ul>
+
+<h2>7. Formato de entrega</h2>
+<ul>
+  <li><strong>Mismo repositorio de la Evaluación 1</strong>, con commits nuevos que muestren el trabajo de esta etapa (incluidos los refactors). Si tuviste observaciones en la Eval. 1, este es el momento de corregirlas de pasada.</li>
+  <li><strong>README.md actualizado</strong> con: instrucciones para correr los tests (<code>npm test</code>, <code>npm run coverage</code>), resumen o captura del reporte de cobertura, qué refactorizaste para hacer el código testeable, y la sección de uso de IA.</li>
+  <li>La suite completa debe pasar en verde con <code>npm install</code> + <code>npm test</code> siguiendo el README. No se exige deploy.</li>
+  <li>Entrega en la plataforma del curso: link al repositorio, antes de la fecha límite indicada en clases.</li>
+</ul>
+
+<div class="callout warn">
+  <p><strong>Consejo final:</strong> parte por RT2 (las validaciones puras). Es lo más fácil de testear y te obliga al refactor que después te salva en RT3. Si el día 3 ya tienes las validaciones extraídas y verdes, los tests de componentes salen solos. Si el día 6 recién estás peleando con la configuración de jsdom, se te vino la noche. Planifica.</p>
+</div>
+
+<footer>TI3V31 · Programación Front End · Evaluación 2: Testing Unitario</footer>
+
+</div>
+</body>
+</html>

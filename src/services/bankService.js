@@ -8,6 +8,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore'
 import { db } from '../firebase/config'
+import { validateTransfer } from '../utils/validations'
 
 const completedStatus = 'Completado'
 
@@ -34,6 +35,16 @@ export function subscribeMovements(uid, onData, onError) {
 }
 
 export async function transferMoney({ amount, description, recipient, sender }) {
+  const validationError = validateTransfer({
+    amount,
+    balance: sender.balance,
+    recipient,
+    recipientEmail: recipient?.email || '',
+    senderId: sender.id,
+  })
+
+  if (validationError) throw new Error(validationError)
+
   const transferRef = doc(collection(db, 'transfers'))
   const senderRef = doc(db, 'users', sender.id)
   const recipientRef = doc(db, 'users', recipient.id)

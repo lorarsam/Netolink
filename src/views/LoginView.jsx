@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AuthCard } from '../components/auth/AuthCard'
 import { BrandLogo } from '../components/brand/BrandLogo'
 import { loginContent } from '../config/auth'
+import { validateLogin } from '../utils/validations'
 
 const initialForm = {
   email: '',
@@ -10,14 +11,23 @@ const initialForm = {
 
 export function LoginView({ content = loginContent, error, isSubmitting, onLogin, onRegister }) {
   const [form, setForm] = useState(initialForm)
+  const [validationError, setValidationError] = useState('')
 
   function handleChange(event) {
     const { name, value } = event.target
     setForm((current) => ({ ...current, [name]: value }))
+    setValidationError('')
   }
 
   function handleSubmit(event) {
     event.preventDefault()
+    const formError = validateLogin(form)
+
+    if (formError) {
+      setValidationError(formError)
+      return
+    }
+
     onLogin(form)
   }
 
@@ -27,7 +37,7 @@ export function LoginView({ content = loginContent, error, isSubmitting, onLogin
         <div className="mb-7">
           <BrandLogo compact {...content.brand} />
         </div>
-        <AuthCard content={content} error={error} form={form} isSubmitting={isSubmitting} onChange={handleChange} onSignUp={onRegister} onSubmit={handleSubmit} />
+        <AuthCard content={content} error={validationError || error} form={form} isSubmitting={isSubmitting} onChange={handleChange} onSignUp={onRegister} onSubmit={handleSubmit} />
       </section>
     </main>
   )

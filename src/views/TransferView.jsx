@@ -5,6 +5,7 @@ import { TransferForm } from '../components/bank/TransferForm'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { transferContent } from '../config/bankFlow'
+import { validateTransfer } from '../utils/validations'
 
 const initialForm = {
   recipient: '',
@@ -27,13 +28,13 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
   }, [availableRecipients, form.recipient])
 
   const amount = Number(form.amount || 0)
-  const checks = {
-    recipient: Boolean(recipient),
-    amount: amount > 0,
-    balance: amount > 0 && amount <= account.balance,
-    self: Boolean(recipient) && recipient.id !== currentUser.id,
-  }
-  const isValid = Object.values(checks).every(Boolean)
+  const validationError = validateTransfer({
+    amount: form.amount,
+    balance: account.balance,
+    recipient,
+    recipientEmail: form.recipient,
+    senderId: currentUser.id,
+  })
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -43,8 +44,8 @@ export function TransferView({ account, currentUser, onCancel, onConfirm, users 
 
   function handleSubmit(event) {
     event.preventDefault()
-    if (!isValid) {
-      setError(transferContent.form.errorMessage)
+    if (validationError) {
+      setError(validationError)
       return
     }
     setShowConfirm(true)

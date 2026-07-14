@@ -233,6 +233,7 @@ export const transferContent = {
     recipientSearchLabel: 'Seleccionar destinatario',
     selectedLabel: 'Activo',
     submitLabel: 'Transferir dinero',
+    submittingLabel: 'Procesando...',
   },
   header: {
     cancelLabel: 'Cancelar',
@@ -242,6 +243,7 @@ export const transferContent = {
   modal: {
     cancelLabel: 'Cancelar',
     confirmLabel: 'Confirmar',
+    submittingLabel: 'Confirmando...',
     subtitle: 'Revisa los detalles antes de confirmar.',
     title: 'Confirmar transferencia',
   },

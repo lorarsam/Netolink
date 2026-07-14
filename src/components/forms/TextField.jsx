@@ -8,9 +8,9 @@ export function TextField({ actionIcon, actionLabels, icon, label, rightLabel, c
   const actionLabel = isPasswordVisible ? actionLabels?.hide : actionLabels?.show
 
   return (
-    <label className={`grid gap-2 text-[10px] font-extrabold text-ink-soft ${className}`} htmlFor={inputProps.id}>
+    <div className={`grid gap-2 text-[10px] font-extrabold text-ink-soft ${className}`}>
       <span className="flex items-center justify-between gap-3">
-        <span>{label}</span>
+        <label htmlFor={inputProps.id}>{label}</label>
         {rightLabel}
       </span>
 
@@ -33,6 +33,6 @@ export function TextField({ actionIcon, actionLabels, icon, label, rightLabel, c
           </button>
         ) : actionIcon ? <Icon name={actionIcon} className="h-3.5 w-3.5 shrink-0" /> : null}
       </span>
-    </label>
+    </div>
   )
 }

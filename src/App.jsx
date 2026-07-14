@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AppShell } from './components/app/AppShell'
 import { screens, transferSuccessContent } from './config/bankFlow'
+import { authErrorMessages } from './config/auth'
 import { createAccountMovement, subscribeMovements, subscribeUserProfile, subscribeUsers, transferMoney } from './services/bankService'
 import { INITIAL_BALANCE, loginUser, logoutUser, registerUser, subscribeAuth } from './services/firebaseAuth'
 import { DashboardView } from './views/DashboardView'
@@ -246,12 +247,12 @@ function toAccount(profile) {
 }
 
 function getAuthErrorMessage(error) {
-  if (error.code === 'auth/invalid-credential') return 'Email o password incorrectos.'
-  if (error.code === 'auth/email-already-in-use') return 'Ese email ya esta registrado.'
-  if (error.code === 'auth/weak-password') return 'La password debe tener al menos 6 caracteres.'
-  if (error.code === 'auth/invalid-email') return 'Ingresa un email valido.'
+  if (error.code === 'auth/invalid-credential') return authErrorMessages.invalidCredential
+  if (error.code === 'auth/email-already-in-use') return authErrorMessages.emailAlreadyInUse
+  if (error.code === 'auth/weak-password') return authErrorMessages.weakPassword
+  if (error.code === 'auth/invalid-email') return authErrorMessages.invalidEmail
 
-  return error.message || 'No se pudo completar la operacion.'
+  return error.message || authErrorMessages.default
 }
 
 function FullScreenState({ message }) {

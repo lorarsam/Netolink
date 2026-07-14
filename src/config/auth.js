@@ -7,6 +7,7 @@ export const loginContent = {
   title: 'Welcome Back',
   subtitle: 'Sign in to continue to your digital bank.',
   submitLabel: 'Login',
+  submittingLabel: 'Validando...',
   forgotPasswordLabel: 'Forgot password?',
   passwordToggleLabels: {
     hide: 'Ocultar password',
@@ -35,4 +36,12 @@ export const loginContent = {
       actionIcon: 'eye',
     },
   ],
+}
+
+export const authErrorMessages = {
+  default: 'No se pudo completar la operacion.',
+  emailAlreadyInUse: 'Ese email ya esta registrado.',
+  invalidCredential: 'Email o password incorrectos.',
+  invalidEmail: 'Ingresa un email valido.',
+  weakPassword: 'La password debe tener al menos 6 caracteres.',
 }
